@@ -1,5 +1,6 @@
 package com.samyak;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -15,6 +16,7 @@ public class SignInBtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             // Storing Form Fields
+            String dbName;
             String email = signIn.getEmail().getText().trim();
             String passwd = "";
             for (char c: signIn.getPasswd().getPassword()) {
@@ -29,12 +31,19 @@ public class SignInBtnListener implements ActionListener {
             if (!passwd.matches(regexp))
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
 
+            // Choosing Correct DB
+            if (signIn.getDbType().equalsIgnoreCase("Student"))
+                dbName = "students";
+            else
+                dbName = "teachers";
+
             // SQL
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/javaproject","root","");
-            PreparedStatement stmt = con.prepareStatement("SELECT name, email, gender, password FROM users WHERE email = ?");
-            stmt.setString(1, email);
+            PreparedStatement stmt = con.prepareStatement("SELECT name, email, gender, password FROM ? WHERE email = ?");
+            stmt.setString(1, dbName);
+            stmt.setString(2, email);
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             if (rs.next()) {
@@ -48,11 +57,12 @@ public class SignInBtnListener implements ActionListener {
                 throw new Exception("Email or Password is Incorrect.");
 
             // All OK
-            new ErrorMsgDisplay("Successfully Signed In!!!", signIn.getSignInForm());
+            new ErrorMsgDisplay("Successfully Signed In!!!", (Component)e.getSource());
             con.close();
+            signIn.onCancel();
         } catch (Exception e1) {
             e1.printStackTrace();
-            new ErrorMsgDisplay(e1.getMessage(), signIn.getSignInForm());
+            new ErrorMsgDisplay(e1.getMessage(), (Component)e.getSource());
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

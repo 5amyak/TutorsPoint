@@ -12,7 +12,7 @@ public class Home {
     private JButton signUpHomeButton;
 
     public Home() {
-        signInHomeButton.addActionListener(new SignInHomeBtnListener());
+        signInHomeButton.addActionListener(new SignInHomeBtnListener(homePanel, typeComboBox.getSelectedItem().toString()));
     }
 
     public static void main(String[] args) {
