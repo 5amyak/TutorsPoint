@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class SignInBtnListener implements ActionListener {
+public class SignInListener implements ActionListener {
      private SignInDialog signInDialog;
 
-    public SignInBtnListener(SignInDialog signInDialog) {
+    public SignInListener(SignInDialog signInDialog) {
         this.signInDialog = signInDialog;
     }
 
@@ -16,7 +16,7 @@ public class SignInBtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             // Storing Form Fields
-            String dbName;
+            String dbName = signInDialog.getDbName();
             String email = signInDialog.getEmail().getText().trim();
             String passwd = "";
             for (char c: signInDialog.getPasswd().getPassword()) {
@@ -30,12 +30,6 @@ public class SignInBtnListener implements ActionListener {
             regexp = "^(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$";
             if (!passwd.matches(regexp))
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
-
-            // Choosing Correct DB
-            if (signInDialog.getDbType().equalsIgnoreCase("Student"))
-                dbName = "students";
-            else
-                dbName = "teachers";
 
             // SQL
             Class.forName("com.mysql.jdbc.Driver");

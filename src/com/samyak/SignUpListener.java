@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class SignUpBtnListener implements ActionListener {
+public class SignUpListener implements ActionListener {
     private SignUpDialog signUpDialog;
 
-    public SignUpBtnListener(SignUpDialog signUpDialog) {
+    public SignUpListener(SignUpDialog signUpDialog) {
         this.signUpDialog = signUpDialog;
     }
 
@@ -46,7 +46,7 @@ public class SignUpBtnListener implements ActionListener {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint","root","");
-            String sql = "INSERT INTO "+ dbName +" (`name`, `email`, `gender`, `password`) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO " + dbName + " (`name`, `email`, `gender`, `password`) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, name);
             stmt.setString(2, email);

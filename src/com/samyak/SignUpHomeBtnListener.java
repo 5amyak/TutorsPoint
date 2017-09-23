@@ -16,7 +16,7 @@ public class SignUpHomeBtnListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (signUpFrame == null) {
+        if (signUpFrame == null || !signUpFrame.isDisplayable()) {
             this.signUpFrame = new JFrame("SignUpDialog");
             signUpFrame.setContentPane(new SignUpDialog(typeComboBox.getSelectedItem().toString()).getSignUpForm());
             signUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -1,8 +1,6 @@
 package com.samyak;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SignUpDialog extends JDialog{
     private JPanel signUpForm;
@@ -22,7 +20,7 @@ public class SignUpDialog extends JDialog{
         else
             dbName = "teachers";
 
-        signUpButton.addActionListener(new SignUpBtnListener(this));
+        signUpButton.addActionListener(new SignUpListener(this));
         cancelButton.addActionListener(e -> onCancel());
     }
 
@@ -59,7 +57,7 @@ public class SignUpDialog extends JDialog{
     }
 
     public void onCancel() {
-        // add your code here if necessary
+        // closing dialog
         JFrame frame = (JFrame)SwingUtilities.getRoot(signUpForm);
         frame.dispose();
     }

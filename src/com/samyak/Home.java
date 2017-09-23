@@ -4,16 +4,17 @@ import javax.swing.*;
 
 public class Home {
     private JPanel homePanel;
-    private JTree tree1;
-    private JTabbedPane tabbedPane1;
+    private JTree coursesTree;
+    private JTabbedPane contentDisplayTabbedPane;
     private JButton button1;
-    private JComboBox typeComboBox;
+    private JComboBox accountTypeComboBox;
     private JButton signInHomeBtn;
     private JButton signUpHomeBtn;
+    private JToolBar topToolBar;
 
     public Home() {
-        signInHomeBtn.addActionListener(new SignInHomeBtnListener(homePanel, typeComboBox));
-        signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(homePanel, typeComboBox));
+        signInHomeBtn.addActionListener(new SignInHomeBtnListener(homePanel, accountTypeComboBox));
+        signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(homePanel, accountTypeComboBox));
     }
 
     public static void main(String[] args) {
@@ -27,6 +28,6 @@ public class Home {
 
     private void createUIComponents() {
         String accountType[]={"Student", "Teacher"};
-        typeComboBox = new JComboBox(accountType);
+        accountTypeComboBox = new JComboBox(accountType);
     }
 }

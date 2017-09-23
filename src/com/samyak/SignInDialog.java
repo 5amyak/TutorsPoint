@@ -8,16 +8,16 @@ public class SignInDialog extends JDialog{
     private JTextField email;
     private JPasswordField passwd;
     private JButton signInButton;
-    private String dbType;
+    private String dbName;
 
     public SignInDialog(String dbType) {
-        this.dbType = dbType;
+        // Choosing Correct DB
+        if (dbType.equals("Student"))
+            dbName = "students";
+        else
+            dbName = "teachers";
 
-        setContentPane(signInFrame);
-        setModal(true);
-        getRootPane().setDefaultButton(signInButton);
-
-        signInButton.addActionListener(new SignInBtnListener(this));
+        signInButton.addActionListener(new SignInListener(this));
         cancelButton.addActionListener(e -> onCancel());
 
     }
@@ -40,7 +40,7 @@ public class SignInDialog extends JDialog{
         return signInFrame;
     }
 
-    public String getDbType() {
-        return dbType;
+    public String getDbName() {
+        return dbName;
     }
 }

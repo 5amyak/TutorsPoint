@@ -10,7 +10,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <toolbar id="d9bc1">
+      <toolbar id="d9bc1" binding="topToolBar">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="-1" height="20"/>
@@ -29,10 +29,22 @@
           <hspacer id="ab77d">
             <constraints/>
           </hspacer>
-          <component id="6f9ff" class="javax.swing.JComboBox" binding="typeComboBox" custom-create="true">
+          <component id="66f8" class="javax.swing.JLabel">
             <constraints/>
             <properties>
-              <maximumSize width="4096" height="32767"/>
+              <font/>
+              <text value="Account Type:"/>
+            </properties>
+          </component>
+          <component id="34b15" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="6f9ff" class="javax.swing.JComboBox" binding="accountTypeComboBox" custom-create="true">
+            <constraints/>
+            <properties>
+              <font/>
+              <maximumSize width="8192" height="32767"/>
               <minimumSize width="33" height="26"/>
               <preferredSize width="33" height="26"/>
             </properties>
@@ -44,6 +56,7 @@
           <component id="abdb5" class="javax.swing.JButton" binding="signInHomeBtn">
             <constraints/>
             <properties>
+              <font/>
               <text value="Sign In"/>
             </properties>
           </component>
@@ -54,6 +67,7 @@
           <component id="10246" class="javax.swing.JButton" binding="signUpHomeBtn">
             <constraints/>
             <properties>
+              <font/>
               <text value="Sign Up"/>
             </properties>
           </component>
@@ -78,13 +92,13 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="c23b0" class="javax.swing.JTree" binding="tree1" default-binding="true">
+              <component id="c23b0" class="javax.swing.JTree" binding="coursesTree">
                 <constraints/>
                 <properties/>
               </component>
             </children>
           </scrollpane>
-          <tabbedpane id="6570a" binding="tabbedPane1" default-binding="true">
+          <tabbedpane id="6570a" binding="contentDisplayTabbedPane">
             <constraints>
               <splitpane position="right"/>
             </constraints>
