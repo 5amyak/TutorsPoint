@@ -8,11 +8,12 @@ public class Home {
     private JTabbedPane tabbedPane1;
     private JButton button1;
     private JComboBox typeComboBox;
-    private JButton signInHomeButton;
-    private JButton signUpHomeButton;
+    private JButton signInHomeBtn;
+    private JButton signUpHomeBtn;
 
     public Home() {
-        signInHomeButton.addActionListener(new SignInHomeBtnListener(homePanel, typeComboBox.getSelectedItem().toString()));
+        signInHomeBtn.addActionListener(new SignInHomeBtnListener(homePanel, typeComboBox));
+        signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(homePanel, typeComboBox));
     }
 
     public static void main(String[] args) {

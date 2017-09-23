@@ -5,26 +5,27 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class SignUpBtnListener implements ActionListener {
-    SignUp signUp;
+    private SignUpDialog signUpDialog;
 
-    public SignUpBtnListener(SignUp signUp) {
-        this.signUp = signUp;
+    public SignUpBtnListener(SignUpDialog signUpDialog) {
+        this.signUpDialog = signUpDialog;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
             // Storing Form Fields
-            String name = signUp.getName().getText().trim();
-            String email = signUp.getEmail().getText().trim();
+            String dbName = signUpDialog.getDbName();
+            String name = signUpDialog.getUserName().getText().trim();
+            String email = signUpDialog.getEmail().getText().trim();
             String passwd = "";
-            for (char c: signUp.getPasswd().getPassword()) {
+            for (char c: signUpDialog.getPasswd().getPassword()) {
                 passwd += c;
             }
             String gender = "";
-            if (signUp.getMaleRadioButton().isSelected())
+            if (signUpDialog.getMaleRadioButton().isSelected())
                 gender = "Male";
-            else if (signUp.getFemaleRadioButton().isSelected())
+            else if (signUpDialog.getFemaleRadioButton().isSelected())
                 gender = "Female";
 
             // Fields Checking
@@ -44,8 +45,9 @@ public class SignUpBtnListener implements ActionListener {
             // SQL
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/javaproject","root","");
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO `users`(`name`, `email`, `gender`, `password`) VALUES (?, ?, ?, ?)");
+                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
+            String sql = "INSERT INTO "+ dbName +" (`name`, `email`, `gender`, `password`) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, name);
             stmt.setString(2, email);
             stmt.setString(3, gender);
@@ -53,11 +55,12 @@ public class SignUpBtnListener implements ActionListener {
             stmt.executeUpdate();
 
             // data inserted successfully
-            new ErrorMsgDisplay("Successfully Signed Up!!!", signUp.getSignUpForm());
+            new ErrorMsgDisplay("Successfully Signed Up!!!", signUpDialog.getSignUpForm());
             con.close();
+            signUpDialog.onCancel();
         } catch (Exception e1) {
             e1.printStackTrace();
-            new ErrorMsgDisplay(e1.getMessage(), signUp.getSignUpForm());
+            new ErrorMsgDisplay(e1.getMessage(), signUpDialog.getSignUpForm());
         }
 
     }

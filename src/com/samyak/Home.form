@@ -41,7 +41,7 @@
             <constraints/>
             <properties/>
           </component>
-          <component id="abdb5" class="javax.swing.JButton" binding="signInHomeButton">
+          <component id="abdb5" class="javax.swing.JButton" binding="signInHomeBtn">
             <constraints/>
             <properties>
               <text value="Sign In"/>
@@ -51,7 +51,7 @@
             <constraints/>
             <properties/>
           </component>
-          <component id="10246" class="javax.swing.JButton" binding="signUpHomeButton">
+          <component id="10246" class="javax.swing.JButton" binding="signUpHomeBtn">
             <constraints/>
             <properties>
               <text value="Sign Up"/>

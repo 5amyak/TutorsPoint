@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SignUp {
+public class SignUpDialog extends JDialog{
     private JPanel signUpForm;
     private JTextField name;
     private JTextField email;
@@ -12,26 +12,22 @@ public class SignUp {
     private JRadioButton maleRadioButton;
     private JRadioButton femaleRadioButton;
     private JButton signUpButton;
+    private JButton cancelButton;
+    private String dbName;
 
-    public SignUp() {
+    public SignUpDialog(String dbType) {
+        // Choosing Correct DB
+        if (dbType.equals("Student"))
+            dbName = "students";
+        else
+            dbName = "teachers";
+
         signUpButton.addActionListener(new SignUpBtnListener(this));
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("SignUp");
-        frame.setContentPane(new SignUp().signUpForm);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        cancelButton.addActionListener(e -> onCancel());
     }
 
     public JPanel getSignUpForm() {
         return signUpForm;
-    }
-
-    public JTextField getName() {
-        return name;
     }
 
     public JTextField getEmail() {
@@ -52,5 +48,19 @@ public class SignUp {
 
     public JButton getSignUpButton() {
         return signUpButton;
+    }
+
+    public JTextField getUserName() {
+        return name;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void onCancel() {
+        // add your code here if necessary
+        JFrame frame = (JFrame)SwingUtilities.getRoot(signUpForm);
+        frame.dispose();
     }
 }

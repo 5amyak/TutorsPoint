@@ -7,18 +7,18 @@ import java.awt.event.ActionListener;
 public class SignInHomeBtnListener implements ActionListener{
     private JPanel homePanel;
     private JFrame signInFrame;
-    private String dbType;
+    private JComboBox typeComboBox;
 
-    public SignInHomeBtnListener(JPanel homePanel, String type) {
+    public SignInHomeBtnListener(JPanel homePanel, JComboBox typeComboBox) {
         this.homePanel = homePanel;
-        this.dbType = type;
+        this.typeComboBox =  typeComboBox;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (signInFrame == null) {
-            this.signInFrame = new JFrame("SignIn");
-            signInFrame.setContentPane(new SignIn(dbType).getMainPane());
+        if (signInFrame == null || !signInFrame.isDisplayable()) {
+            this.signInFrame = new JFrame("SignInDialog");
+            signInFrame.setContentPane(new SignInDialog(typeComboBox.getSelectedItem().toString()).getSignInFrame());
             signInFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             signInFrame.pack();
             signInFrame.setLocationRelativeTo(homePanel);

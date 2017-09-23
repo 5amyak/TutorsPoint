@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class SignInBtnListener implements ActionListener {
-     private SignIn signIn;
+     private SignInDialog signInDialog;
 
-    public SignInBtnListener(SignIn signIn) {
-        this.signIn = signIn;
+    public SignInBtnListener(SignInDialog signInDialog) {
+        this.signInDialog = signInDialog;
     }
 
     @Override
@@ -17,9 +17,9 @@ public class SignInBtnListener implements ActionListener {
         try {
             // Storing Form Fields
             String dbName;
-            String email = signIn.getEmail().getText().trim();
+            String email = signInDialog.getEmail().getText().trim();
             String passwd = "";
-            for (char c: signIn.getPasswd().getPassword()) {
+            for (char c: signInDialog.getPasswd().getPassword()) {
                 passwd += c;
             }
 
@@ -32,7 +32,7 @@ public class SignInBtnListener implements ActionListener {
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
 
             // Choosing Correct DB
-            if (signIn.getDbType().equalsIgnoreCase("Student"))
+            if (signInDialog.getDbType().equalsIgnoreCase("Student"))
                 dbName = "students";
             else
                 dbName = "teachers";
@@ -40,10 +40,9 @@ public class SignInBtnListener implements ActionListener {
             // SQL
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/javaproject","root","");
-            PreparedStatement stmt = con.prepareStatement("SELECT name, email, gender, password FROM ? WHERE email = ?");
-            stmt.setString(1, dbName);
-            stmt.setString(2, email);
+                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
+            PreparedStatement stmt = con.prepareStatement(String.format("SELECT name, email, gender, password FROM %s WHERE email = ?", dbName));
+            stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             if (rs.next()) {
@@ -59,7 +58,7 @@ public class SignInBtnListener implements ActionListener {
             // All OK
             new ErrorMsgDisplay("Successfully Signed In!!!", (Component)e.getSource());
             con.close();
-            signIn.onCancel();
+            signInDialog.onCancel();
         } catch (Exception e1) {
             e1.printStackTrace();
             new ErrorMsgDisplay(e1.getMessage(), (Component)e.getSource());
