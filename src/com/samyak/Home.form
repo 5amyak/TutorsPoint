@@ -19,11 +19,17 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="97400" class="javax.swing.JButton" binding="button1" default-binding="true">
+          <component id="35593" class="javax.swing.JTextField" binding="searchTextField">
+            <constraints/>
+            <properties>
+              <maximumSize width="32767" height="32767"/>
+            </properties>
+          </component>
+          <component id="97400" class="javax.swing.JButton" binding="searchButton">
             <constraints/>
             <properties>
               <horizontalAlignment value="2"/>
-              <text value="Button"/>
+              <text value="Search"/>
             </properties>
           </component>
           <hspacer id="ab77d">
@@ -44,8 +50,8 @@
             <constraints/>
             <properties>
               <font/>
-              <maximumSize width="8192" height="32767"/>
-              <minimumSize width="33" height="26"/>
+              <maximumSize width="16384" height="32767"/>
+              <minimumSize width="35" height="26"/>
               <preferredSize width="33" height="26"/>
             </properties>
           </component>
@@ -71,6 +77,16 @@
               <text value="Sign Up"/>
             </properties>
           </component>
+          <component id="45de7" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="92977" class="javax.swing.JButton" binding="settingsButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Settings"/>
+            </properties>
+          </component>
         </children>
       </toolbar>
       <splitpane id="b50b9">
@@ -80,7 +96,7 @@
           </grid>
         </constraints>
         <properties>
-          <dividerLocation value="150"/>
+          <dividerLocation value="175"/>
           <dividerSize value="7"/>
         </properties>
         <border type="none"/>
@@ -92,7 +108,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="c23b0" class="javax.swing.JTree" binding="coursesTree">
+              <component id="c23b0" class="javax.swing.JTree" binding="coursesTree" custom-create="true">
                 <constraints/>
                 <properties/>
               </component>
