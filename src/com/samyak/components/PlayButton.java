@@ -6,6 +6,7 @@ public class PlayButton extends JButton {
     private int videoId;
     private String videoName;
     private String videoPath;
+    private String clientVideoPath;
 
     public PlayButton(int videoId, String videoName, String videoPath) {
         super("Play");
@@ -24,5 +25,13 @@ public class PlayButton extends JButton {
 
     public String getVideoName() {
         return videoName;
+    }
+
+    public String getClientVideoPath() {
+        return clientVideoPath;
+    }
+
+    public void setClientVideoPath(String clientVideoPath) {
+        this.clientVideoPath = clientVideoPath;
     }
 }

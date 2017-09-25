@@ -98,7 +98,7 @@ public class MediaPlayer {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        mediaPlayerComponent.getMediaPlayer().playMedia(playButton.getVideoPath());
+        mediaPlayerComponent.getMediaPlayer().playMedia(playButton.getClientVideoPath());
     }
 
     private void closeWindow() {

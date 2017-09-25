@@ -20,7 +20,7 @@ public class ReceiveThread implements Runnable{
             System.out.println("Receiving from server.");
             dis = new DataInputStream(socket.getInputStream());
             // Reading file and copying it into new file on client side
-            String fileName = "tutorials\\";
+            String fileName = "server_tutorials\\";
             fileName += new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
             fileName += ".mp4";
             FileOutputStream fout = new FileOutputStream(fileName);
