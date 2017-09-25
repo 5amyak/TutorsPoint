@@ -6,6 +6,7 @@ import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -37,15 +38,34 @@ public class MediaPlayer {
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
 
-        mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+        mediaPlayerComponent = new EmbeddedMediaPlayerComponent() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+                switch( keyCode ) {
+                    case KeyEvent.VK_SPACE:
+                        pauseButton.doClick();
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        rewindButton.doClick();
+                        break;
+                    case KeyEvent.VK_RIGHT :
+                        skipButton.doClick();
+                        break;
+                }
+                mediaPlayerComponent.getVideoSurface().requestFocusInWindow();
+            }
+        };
         contentPane.add(mediaPlayerComponent, BorderLayout.CENTER);
 
         JPanel controlsPane = new JPanel();
         pauseButton = new JButton("Pause");
         controlsPane.add(pauseButton);
         rewindButton = new JButton("Rewind");
+        rewindButton.setFocusable(false);
         controlsPane.add(rewindButton);
         skipButton = new JButton("Skip");
+        skipButton.setFocusable(false);
         controlsPane.add(skipButton);
         contentPane.add(controlsPane, BorderLayout.SOUTH);
         // implementing listeners on buttons
@@ -53,15 +73,8 @@ public class MediaPlayer {
         rewindButton.addActionListener(e -> mediaPlayerComponent.getMediaPlayer().skip(-10000));
         skipButton.addActionListener(e -> mediaPlayerComponent.getMediaPlayer().skip(10000));
 
+        // event handling on media player
         mediaPlayerComponent.getMediaPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
-            @Override
-            public void playing(uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer) {
-                SwingUtilities.invokeLater(() -> frame.setTitle(String.format(
-                        "My First Media Player - %s",
-                        mediaPlayerComponent.getMediaPlayer().getMediaMeta().getTitle()
-                )));
-            }
-
             @Override
             public void finished(uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer) {
                 SwingUtilities.invokeLater(() -> closeWindow());
@@ -82,6 +95,7 @@ public class MediaPlayer {
         });
 
         frame.setContentPane(contentPane);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         mediaPlayerComponent.getMediaPlayer().playMedia(playButton.getVideoPath());
