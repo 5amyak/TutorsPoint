@@ -1,5 +1,7 @@
 package com.samyak;
 
+import com.samyak.listeners.SignInListener;
+
 import javax.swing.*;
 
 public class SignInDialog extends JDialog{

@@ -1,27 +1,28 @@
-package com.samyak;
+package com.samyak.listeners;
+
+import com.samyak.Home;
+import com.samyak.SignInDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SignInHomeBtnListener implements ActionListener{
-    private JPanel homePanel;
     private JFrame signInFrame;
-    private JComboBox typeComboBox;
+    private Home home;
 
-    public SignInHomeBtnListener(JPanel homePanel, JComboBox typeComboBox) {
-        this.homePanel = homePanel;
-        this.typeComboBox =  typeComboBox;
+    public SignInHomeBtnListener(Home home) {
+        this.home = home;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (signInFrame == null || !signInFrame.isDisplayable()) {
             this.signInFrame = new JFrame("SignInDialog");
-            signInFrame.setContentPane(new SignInDialog(typeComboBox.getSelectedItem().toString()).getSignInFrame());
+            signInFrame.setContentPane(new SignInDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getSignInFrame());
             signInFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             signInFrame.pack();
-            signInFrame.setLocationRelativeTo(homePanel);
+            signInFrame.setLocationRelativeTo(home.getHomePanel());
             signInFrame.setVisible(true);
         }
         else {

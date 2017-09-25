@@ -1,4 +1,8 @@
-package com.samyak;
+package com.samyak.listeners;
+
+import com.samyak.ErrorMsgDisplay;
+import com.samyak.includes.PasswordAuthentication;
+import com.samyak.SignInDialog;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

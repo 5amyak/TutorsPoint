@@ -1,27 +1,28 @@
-package com.samyak;
+package com.samyak.listeners;
+
+import com.samyak.Home;
+import com.samyak.SignUpDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SignUpHomeBtnListener implements ActionListener {
-    private JPanel homePanel;
+    private Home home;
     private JFrame signUpFrame;
-    private JComboBox typeComboBox;
 
-    public SignUpHomeBtnListener(JPanel homePanel, JComboBox typeComboBox) {
-        this.homePanel = homePanel;
-        this.typeComboBox =  typeComboBox;
+    public SignUpHomeBtnListener(Home home) {
+        this.home = home;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (signUpFrame == null || !signUpFrame.isDisplayable()) {
             this.signUpFrame = new JFrame("SignUpDialog");
-            signUpFrame.setContentPane(new SignUpDialog(typeComboBox.getSelectedItem().toString()).getSignUpForm());
+            signUpFrame.setContentPane(new SignUpDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getSignUpForm());
             signUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             signUpFrame.pack();
-            signUpFrame.setLocationRelativeTo(homePanel);
+            signUpFrame.setLocationRelativeTo(home.getHomePanel());
             signUpFrame.setVisible(true);
         }
         else {

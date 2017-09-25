@@ -1,9 +1,13 @@
 package com.samyak;
 
+import com.samyak.includes.Utilities;
+import com.samyak.listeners.SignInHomeBtnListener;
+import com.samyak.listeners.SignUpHomeBtnListener;
+import com.samyak.listeners.TreeNodeSelectListener;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.event.ComponentAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,11 +31,11 @@ public class Home {
     public Home() {
         util = new Utilities();
 
-        signInHomeBtn.addActionListener(new SignInHomeBtnListener(homePanel, accountTypeComboBox));
-        signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(homePanel, accountTypeComboBox));
+        signInHomeBtn.addActionListener(new SignInHomeBtnListener(this));
+        signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(this));
 
+        // Listen for when the selection changes in coursesTree.
         coursesTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        //Listen for when the selection changes.
         coursesTree.addTreeSelectionListener(new TreeNodeSelectListener(this));
     }
 
@@ -70,11 +74,11 @@ public class Home {
                 int course_id = rs.getInt(1);
                 course = new DefaultMutableTreeNode(rs.getString(2));
                 top.add(course);
-                stmt = con.prepareStatement("SELECT subtopic_id, name FROM subtopics WHERE course_id = ?");
+                stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
                 stmt.setInt(1, course_id);
                 ResultSet nrs = stmt.executeQuery();
                 while(nrs.next()) {
-                    subtopic = new DefaultMutableTreeNode(new Subtopic(nrs.getInt(1), nrs.getString(2)));
+                    subtopic = new DefaultMutableTreeNode(new Subtopic(nrs.getInt(1), nrs.getString(2), nrs.getString(3)));
                     course.add(subtopic);
                 }
             }
@@ -122,6 +126,10 @@ public class Home {
 
     public JButton getSettingsButton() {
         return settingsButton;
+    }
+
+    public Utilities getUtil() {
+        return util;
     }
 
     public static String getUserName() {

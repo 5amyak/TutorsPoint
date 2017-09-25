@@ -1,4 +1,4 @@
-package com.samyak;
+package com.samyak.includes;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
