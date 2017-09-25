@@ -49,7 +49,7 @@ public class Utilities {
                 videoPanel.add(videoNameLabel, c);
                 c.gridx = 0;
                 c.gridy = GridBagConstraints.RELATIVE;
-                JButton playBtn = new PlayButton(rs.getInt(1), rs.getString(3));
+                JButton playBtn = new PlayButton(rs.getInt(1), rs.getString(2), rs.getString(3));
                 playBtn.addActionListener(new PlayBtnListener());
                 videoPanel.add(playBtn, c);
 

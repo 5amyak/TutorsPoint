@@ -1,4 +1,4 @@
-package com.samyak;
+package com.samyak.components;
 
 import javax.swing.*;
 import java.awt.*;

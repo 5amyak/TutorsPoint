@@ -1,7 +1,7 @@
 package com.samyak.listeners;
 
 import com.samyak.Home;
-import com.samyak.SignInDialog;
+import com.samyak.components.SignInDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

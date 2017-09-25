@@ -58,8 +58,8 @@ public class Home {
     }
 
     public void createNodes(DefaultMutableTreeNode top) {
-        DefaultMutableTreeNode course = null;
-        DefaultMutableTreeNode subtopic = null;
+        DefaultMutableTreeNode course;
+        DefaultMutableTreeNode subtopic;
 
         // SQL
         try {

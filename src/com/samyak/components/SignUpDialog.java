@@ -1,4 +1,4 @@
-package com.samyak;
+package com.samyak.components;
 
 import com.samyak.listeners.SignUpListener;
 
