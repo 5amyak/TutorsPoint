@@ -10,7 +10,7 @@ import java.sql.*;
 
 public class Utilities {
 
-    public JScrollPane createTab(Subtopic subtopic) {
+    public JScrollPane createVideoTab(Subtopic subtopic) {
         JPanel tabPanel = new JPanel();
         // setName on scrollPane to uniquely identify the tab
         // add tabPanel on scrollPane to allow scrolling
@@ -65,6 +65,49 @@ public class Utilities {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return scrollPane;
+    }
+
+    public JScrollPane createTeacherSettingsTab() {
+        JPanel tabPanel = new JPanel();
+        // setName on scrollPane to uniquely identify the tab
+        // add tabPanel on scrollPane to allow scrolling
+        JScrollPane scrollPane = new JScrollPane(tabPanel);
+        scrollPane.setName("settings");
+        tabPanel.setLayout(new GridBagLayout());
+
+        // info about position, padding, look of component
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(3, 5, 3, 5);
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        JButton createCourseBtn = new JButton("Create Course");
+        tabPanel.add(createCourseBtn, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        JButton addSubtopicsBtn = new JButton("Add Subtopics");
+        tabPanel.add(addSubtopicsBtn, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JButton updateProfileBtn = new JButton("Update Profile");
+        tabPanel.add(updateProfileBtn, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        JButton manageContentBtn = new JButton("Manage Content");
+        tabPanel.add(manageContentBtn, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        JButton uploadVideoBtn = new JButton("Upload Video");
+//        uploadVideoBtn.addActionListener(new UploadVideoListener());
+        tabPanel.add(uploadVideoBtn, gbc);
 
         return scrollPane;
     }

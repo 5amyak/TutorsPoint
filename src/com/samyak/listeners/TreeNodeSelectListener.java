@@ -42,10 +42,10 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
                 }
             }
 
-            // create tab from createTab() method in Utilities class
+            // create tab from createVideoTab() method in Utilities class
             // switch to newly created tab
             // modify tab button to allow closing of tab
-            JScrollPane scrollPane = home.getUtil().createTab(subtopic);
+            JScrollPane scrollPane = home.getUtil().createVideoTab(subtopic);
             tabbedPane.addTab(subtopic.getSubtopicName(), null, scrollPane, subtopic.getSubtopicDescription());
             tabbedPane.setSelectedComponent(scrollPane);
             tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane, home.getCoursesTree()));

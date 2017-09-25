@@ -3,11 +3,14 @@ package com.samyak;
 import com.samyak.includes.Utilities;
 import com.samyak.listeners.SignInHomeBtnListener;
 import com.samyak.listeners.SignUpHomeBtnListener;
+import com.samyak.listeners.TeacherSettingsBtnListener;
 import com.samyak.listeners.TreeNodeSelectListener;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,6 +40,8 @@ public class Home {
         // Listen for when the selection changes in coursesTree.
         coursesTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         coursesTree.addTreeSelectionListener(new TreeNodeSelectListener(this));
+
+        settingsButton.addActionListener(new TeacherSettingsBtnListener(this));
     }
 
     public static void main(String[] args) {
