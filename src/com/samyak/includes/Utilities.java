@@ -3,6 +3,7 @@ package com.samyak.includes;
 import com.samyak.Subtopic;
 import com.samyak.components.PlayButton;
 import com.samyak.listeners.PlayBtnListener;
+import com.samyak.listeners.UploadVideoListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -106,7 +107,7 @@ public class Utilities {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         JButton uploadVideoBtn = new JButton("Upload Video");
-//        uploadVideoBtn.addActionListener(new UploadVideoListener());
+        uploadVideoBtn.addActionListener(new UploadVideoListener());
         tabPanel.add(uploadVideoBtn, gbc);
 
         return scrollPane;
