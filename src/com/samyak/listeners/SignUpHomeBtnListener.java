@@ -19,7 +19,7 @@ public class SignUpHomeBtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (signUpFrame == null || !signUpFrame.isDisplayable()) {
             this.signUpFrame = new JFrame("SignUpDialog");
-            signUpFrame.setContentPane(new SignUpDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getSignUpForm());
+            signUpFrame.setContentPane(new SignUpDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getScrollPane());
             signUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             signUpFrame.pack();
             signUpFrame.setLocationRelativeTo(home.getHomePanel());

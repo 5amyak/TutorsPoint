@@ -19,7 +19,7 @@ public class SignInHomeBtnListener implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (signInFrame == null || !signInFrame.isDisplayable()) {
             this.signInFrame = new JFrame("SignInDialog");
-            signInFrame.setContentPane(new SignInDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getSignInFrame());
+            signInFrame.setContentPane(new SignInDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getScrollPane());
             signInFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             signInFrame.pack();
             signInFrame.setLocationRelativeTo(home.getHomePanel());

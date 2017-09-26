@@ -2,8 +2,7 @@ package com.samyak.includes;
 
 import com.samyak.Subtopic;
 import com.samyak.components.PlayButton;
-import com.samyak.listeners.PlayBtnListener;
-import com.samyak.listeners.UploadVideoListener;
+import com.samyak.listeners.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,11 +85,13 @@ public class Utilities {
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         JButton createCourseBtn = new JButton("Create Course");
+        createCourseBtn.addActionListener(new CreateCourseBtnListener());
         tabPanel.add(createCourseBtn, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         JButton addSubtopicsBtn = new JButton("Add Subtopics");
+        addSubtopicsBtn.addActionListener(new AddSubtopicBtnListener());
         tabPanel.add(addSubtopicsBtn, gbc);
 
         gbc.gridx = 0;

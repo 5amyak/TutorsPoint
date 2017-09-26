@@ -1,5 +1,6 @@
 package com.samyak.listeners;
 
+import com.samyak.Home;
 import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.includes.PasswordAuthentication;
 import com.samyak.components.SignInDialog;
@@ -36,19 +37,25 @@ public class SignInListener implements ActionListener {
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
 
             // SQL
+            String idType;
+            if (dbName.equals("students"))
+                idType = "student_id";
+            else
+                idType = "teacher_id";
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint","root","");
-            PreparedStatement stmt = con.prepareStatement(String.format("SELECT name, email, gender, password FROM %s WHERE email = ?", dbName));
+            PreparedStatement stmt = con.prepareStatement(String.format("SELECT %s, name, password FROM %s WHERE email = ?", idType, dbName));
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             if (rs.next()) {
                 // Validate Password
                 PasswordAuthentication authentication = new PasswordAuthentication();
-                if (!authentication.authenticate(passwd.toCharArray(), rs.getString(4)))
+                if (!authentication.authenticate(passwd.toCharArray(), rs.getString(3)))
                     throw new Exception("Email or Password is Incorrect.");
-                System.out.println("Name: " + rs.getString(1) + " E-Mail: " + rs.getString(2) + " Gender: " + rs.getString(3));
+                Home.setUserId(rs.getInt(1));
+                Home.setUserName(rs.getString(2));
             }
             else
                 throw new Exception("Email or Password is Incorrect.");

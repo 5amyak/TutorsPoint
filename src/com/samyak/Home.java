@@ -11,6 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,6 +34,8 @@ public class Home {
     private static int userId;
 
     public Home() {
+        this.userId = -1;
+        this.userName = "";
         util = new Utilities();
 
         signInHomeBtn.addActionListener(new SignInHomeBtnListener(this));
@@ -40,8 +44,15 @@ public class Home {
         // Listen for when the selection changes in coursesTree.
         coursesTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         coursesTree.addTreeSelectionListener(new TreeNodeSelectListener(this));
+        coursesTree.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                coursesTree.clearSelection();
+            }
+        });
 
         settingsButton.addActionListener(new TeacherSettingsBtnListener(this));
+
     }
 
     public static void main(String[] args) {
@@ -71,13 +82,12 @@ public class Home {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name FROM courses");
+            PreparedStatement stmt = con.prepareStatement("SELECT course_id, teacher_id, name FROM courses");
             ResultSet rs = stmt.executeQuery();
 
-            // if record found using email
             while (rs.next()) {
                 int course_id = rs.getInt(1);
-                course = new DefaultMutableTreeNode(rs.getString(2));
+                course = new DefaultMutableTreeNode(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3)));
                 top.add(course);
                 stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
                 stmt.setInt(1, course_id);

@@ -5,6 +5,7 @@ import com.samyak.listeners.SignUpListener;
 import javax.swing.*;
 
 public class SignUpDialog extends JDialog{
+    private JScrollPane scrollPane;
     private JPanel signUpForm;
     private JTextField name;
     private JTextField email;
@@ -22,6 +23,7 @@ public class SignUpDialog extends JDialog{
         else
             dbName = "teachers";
 
+        scrollPane = new JScrollPane(signUpForm);
         signUpButton.addActionListener(new SignUpListener(this));
         cancelButton.addActionListener(e -> onCancel());
     }
@@ -62,5 +64,9 @@ public class SignUpDialog extends JDialog{
         // closing dialog
         JFrame frame = (JFrame)SwingUtilities.getRoot(signUpForm);
         frame.dispose();
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
     }
 }

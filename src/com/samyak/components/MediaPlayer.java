@@ -60,6 +60,7 @@ public class MediaPlayer {
 
         JPanel controlsPane = new JPanel();
         pauseButton = new JButton("Pause");
+        pauseButton.setFocusable(false);
         controlsPane.add(pauseButton);
         rewindButton = new JButton("Rewind");
         rewindButton.setFocusable(false);

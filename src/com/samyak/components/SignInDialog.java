@@ -5,6 +5,7 @@ import com.samyak.listeners.SignInListener;
 import javax.swing.*;
 
 public class SignInDialog extends JDialog{
+    JScrollPane scrollPane;
     private JPanel signInFrame;
     private JButton cancelButton;
     private JTextField email;
@@ -19,6 +20,7 @@ public class SignInDialog extends JDialog{
         else
             dbName = "teachers";
 
+        scrollPane = new JScrollPane(signInFrame);
         signInButton.addActionListener(new SignInListener(this));
         cancelButton.addActionListener(e -> onCancel());
 
@@ -44,5 +46,9 @@ public class SignInDialog extends JDialog{
 
     public String getDbName() {
         return dbName;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
     }
 }

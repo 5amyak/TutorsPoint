@@ -70,7 +70,6 @@ public class ButtonTabComponent extends JPanel {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
                 pane.remove(i);
-                // clear selection on coursesTree to allow creation of removed tab
                 coursesTree.clearSelection();
             }
         }

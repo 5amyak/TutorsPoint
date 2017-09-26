@@ -1,5 +1,6 @@
 package com.samyak.listeners;
 
+import com.samyak.Home;
 import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.includes.PasswordAuthentication;
 import com.samyak.components.SignUpDialog;
@@ -57,6 +58,19 @@ public class SignUpListener implements ActionListener {
             stmt.setString(3, gender);
             stmt.setString(4, passwd);
             stmt.executeUpdate();
+
+            String idType;
+            if (dbName.equals("students"))
+                idType = "student_id";
+            else
+                idType = "teacher_id";
+            stmt = con.prepareStatement(String.format("SELECT %s FROM %s WHERE email = ?", idType, dbName));
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            Home.setUserId(rs.getInt(1));
+            Home.setUserName(name);
+
 
             // data inserted successfully
             new ErrorMsgDisplay("Successfully Signed Up!!!", signUpDialog.getSignUpForm());

@@ -24,12 +24,12 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                 home.getCoursesTree().getLastSelectedPathComponent();
 
-        // Nothing is selected or leaf is not selected.
-        if (node == null || !node.isLeaf())
+        // Nothing is selected
+        if (node == null)
             return;
 
         Object nodeInfo = node.getUserObject();
-        if (node.isLeaf()) {
+        if (nodeInfo instanceof Subtopic) {
             // typecast tree node Object to original Object
             Subtopic subtopic = (Subtopic) nodeInfo;
             JTabbedPane tabbedPane = home.getContentDisplayTabbedPane();

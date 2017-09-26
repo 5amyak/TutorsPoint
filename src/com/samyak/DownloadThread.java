@@ -1,7 +1,9 @@
 package com.samyak;
 
+import com.samyak.components.MediaPlayer;
 import com.samyak.components.PlayButton;
 
+import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -34,7 +36,8 @@ public class DownloadThread implements Runnable {
             File checkDir = new File("client_tutorials");
             if (!checkDir.exists())
                 checkDir.mkdir();
-            FileOutputStream fout = new FileOutputStream("client_tutorials\\" + playButton.getVideoName() + Integer.toString(playButton.getVideoId()) + ".mp4");
+            String filePath = "client_tutorials/" + playButton.getVideoName() + Integer.toString(playButton.getVideoId()) + ".mp4";
+            FileOutputStream fout = new FileOutputStream(filePath);
             int size;
             do {
                 byte b[] = new byte[1024];
@@ -47,6 +50,11 @@ public class DownloadThread implements Runnable {
             dos.close();
             dis.close();
             socket.close();
+
+            SwingUtilities.invokeLater(() -> {
+                playButton.setClientVideoPath(filePath);
+                new MediaPlayer(playButton);
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
