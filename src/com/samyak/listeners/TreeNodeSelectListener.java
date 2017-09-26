@@ -1,5 +1,6 @@
 package com.samyak.listeners;
 
+import com.samyak.Course;
 import com.samyak.Home;
 import com.samyak.Subtopic;
 import com.samyak.components.ButtonTabComponent;
@@ -37,7 +38,7 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
 
             // if already opened, switch to it and return
             for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-                if (tabbedPane.getComponentAt(i).getName().equals(Integer.toString(subtopic.getSubtopicId()))) {
+                if (tabbedPane.getComponentAt(i).getName().equals(Integer.toString(subtopic.getSubtopicId() * -1))) {
                     tabbedPane.setSelectedIndex(i);
                     return;
                 }
@@ -48,6 +49,28 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
             // modify tab button to allow closing of tab
             JScrollPane scrollPane = home.getUtil().createVideoTab(subtopic);
             tabbedPane.addTab(subtopic.getSubtopicName(), null, scrollPane, subtopic.getSubtopicDescription());
+            tabbedPane.setSelectedComponent(scrollPane);
+            tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane));
+        }
+
+        if (nodeInfo instanceof Course) {
+            // typecast tree node Object to original Object
+            Course course = (Course) nodeInfo;
+            JTabbedPane tabbedPane = home.getContentDisplayTabbedPane();
+
+            // if already opened, switch to it and return
+            for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+                if (tabbedPane.getComponentAt(i).getName().equals(Integer.toString(course.getCourseId()))) {
+                    tabbedPane.setSelectedIndex(i);
+                    return;
+                }
+            }
+
+            // create tab from createVideoTab() method in Utilities class
+            // switch to newly created tab
+            // modify tab button to allow closing of tab
+            JScrollPane scrollPane = home.getUtil().createCourseTab(course);
+            tabbedPane.addTab(course.getCourseName(), scrollPane);
             tabbedPane.setSelectedComponent(scrollPane);
             tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane));
         }

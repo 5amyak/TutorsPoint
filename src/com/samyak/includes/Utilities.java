@@ -18,7 +18,7 @@ public class Utilities {
         // setName on scrollPane to uniquely identify the tab if already opened
         // add tabPanel on scrollPane to allow scrolling
         JScrollPane scrollPane = new JScrollPane(tabPanel);
-        scrollPane.setName(Integer.toString(subtopic.getSubtopicId()));
+        scrollPane.setName(Integer.toString(subtopic.getSubtopicId() * -1));
         tabPanel.setLayout(new GridBagLayout());
 
         // info about position, padding, look of component
@@ -80,6 +80,77 @@ public class Utilities {
                     gbc.gridy++;
                 }
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+
+        return scrollPane;
+    }
+
+    public JScrollPane createCourseTab(Course course) {
+        JPanel tabPanel = new JPanel();
+        // setName on scrollPane to uniquely identify the tab if already opened
+        // add tabPanel on scrollPane to allow scrolling
+        JScrollPane scrollPane = new JScrollPane(tabPanel);
+        scrollPane.setName(Integer.toString(course.getCourseId()));
+
+        // SQL to set info about video on its play button and like button
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            PreparedStatement stmt = con.prepareStatement("SELECT name, email FROM teachers WHERE teacher_id=?");
+            stmt.setInt(1, course.getTeacherId());
+            ResultSet rs = stmt.executeQuery();
+
+            // creating video panel for each video in a subtopic
+            // like and watch later buttons have setName() to get video id later
+            rs.next();
+
+            // info about position, padding, look of component
+            tabPanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.insets = new Insets(3, 5, 3, 5);
+            gbc.weightx = 0.5;
+            gbc.weighty = 0.5;
+            gbc.gridwidth = 2;
+            JLabel courseNameLabel = new JLabel(course.getCourseName());
+            courseNameLabel.setFont(new Font("Century Gothic", Font.BOLD, 18));
+            tabPanel.add(courseNameLabel, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 2;
+            JLabel aboutCourseLabel = new JLabel(String.format("Course Content is provided by %s. E-mail:  %s", rs.getString(1), rs.getString(2)));
+            tabPanel.add(aboutCourseLabel, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 1;
+            JButton rateCourseBtn = new JButton("Rate Course");
+            rateCourseBtn.addActionListener(new RateCourseBtnListener());
+            rateCourseBtn.setName(Integer.toString(course.getCourseId()));
+            tabPanel.add(rateCourseBtn, gbc);
+
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+            gbc.gridwidth = 1;
+            JButton subscribeBtn = new JButton(String.format("Subscribe to %s", rs.getString(1)));
+            subscribeBtn.addActionListener(new SubscribeBtnListener());
+            subscribeBtn.setName(Integer.toString(course.getTeacherId()));
+            tabPanel.add(subscribeBtn, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 3;
+            gbc.gridwidth = 2;
+            JButton inProgressCourseBtn = new JButton("Continue Later");
+            inProgressCourseBtn.addActionListener(new InProgressCourseBtnListener());
+            inProgressCourseBtn.setName(Integer.toString(course.getCourseId()));
+            tabPanel.add(inProgressCourseBtn, gbc);
 
         } catch (Exception e) {
             e.printStackTrace();
