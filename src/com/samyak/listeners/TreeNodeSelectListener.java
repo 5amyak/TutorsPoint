@@ -28,6 +28,7 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
         if (node == null)
             return;
 
+        // if selected object is not of type subtopic then return
         Object nodeInfo = node.getUserObject();
         if (nodeInfo instanceof Subtopic) {
             // typecast tree node Object to original Object
@@ -48,7 +49,7 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
             JScrollPane scrollPane = home.getUtil().createVideoTab(subtopic);
             tabbedPane.addTab(subtopic.getSubtopicName(), null, scrollPane, subtopic.getSubtopicDescription());
             tabbedPane.setSelectedComponent(scrollPane);
-            tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane, home.getCoursesTree()));
+            tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane));
         }
     }
 }

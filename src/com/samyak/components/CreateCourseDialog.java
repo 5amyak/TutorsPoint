@@ -19,17 +19,9 @@ public class CreateCourseDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonCreateCourse);
 
-        buttonCreateCourse.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCreateCourse();
-            }
-        });
+        buttonCreateCourse.addActionListener(e -> onCreateCourse());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -40,11 +32,7 @@ public class CreateCourseDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onCreateCourse() {
@@ -53,13 +41,14 @@ public class CreateCourseDialog extends JDialog {
             String courseName = courseNameField.getText().trim();
             if (courseName.equals(""))
                 throw new Exception("* marked fields are mandatory.");
-            // SQL
+
+            // SQL to create a new course
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint","root","");
             String sql = "INSERT INTO courses (`teacher_id`, `name`) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, Home.getUserId());
+            stmt.setInt(1, Home.getHome().getUserId());
             stmt.setString(2, courseName);
             stmt.executeUpdate();
 
@@ -77,10 +66,6 @@ public class CreateCourseDialog extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
-        dispose();
-    }
-
-    public static void main(String[] args) {
-
+        this.dispose();
     }
 }

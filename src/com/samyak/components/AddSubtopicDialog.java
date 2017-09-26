@@ -2,7 +2,6 @@ package com.samyak.components;
 
 import com.samyak.Course;
 import com.samyak.Home;
-import com.samyak.includes.PasswordAuthentication;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -31,17 +30,9 @@ public class AddSubtopicDialog extends JDialog {
         descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(border,
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
-        buttonAddSubtopic.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAddSubtopic();
-            }
-        });
+        buttonAddSubtopic.addActionListener(e -> onAddSubtopic());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -52,11 +43,7 @@ public class AddSubtopicDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onAddSubtopic() {
@@ -100,20 +87,21 @@ public class AddSubtopicDialog extends JDialog {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, teacher_id, name FROM courses WHERE teacher_id = ?");
-            stmt.setInt(1, Home.getUserId());
+            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name, avg_rating FROM courses WHERE teacher_id = ?");
+            stmt.setInt(1, Home.getHome().getUserId());
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             while (rs.next()) {
-                courses.add(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3)));
+                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(3), rs.getInt(4)));
             }
             con.close();
+
+            courseComboBox = new JComboBox(courses.toArray());
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        courseComboBox = new JComboBox(courses.toArray());
     }
 
 }

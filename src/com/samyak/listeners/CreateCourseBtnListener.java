@@ -9,14 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CreateCourseBtnListener implements ActionListener {
-    CreateCourseDialog dialog;
+    private CreateCourseDialog dialog;
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (Home.getUserId() == -1 || Home.getUserName().equals("")) {
-            new ErrorMsgDisplay("Not Signed in. Sign in First", (Component) e.getSource());
-            return;
-        }
 
         if (dialog == null || !dialog.isDisplayable()) {
             dialog = new CreateCourseDialog();

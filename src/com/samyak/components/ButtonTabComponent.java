@@ -1,4 +1,7 @@
 package com.samyak.components;
+
+import com.samyak.Home;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
@@ -11,15 +14,13 @@ import java.awt.event.*;
  */
 public class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
-    private JTree coursesTree;
 
-    public ButtonTabComponent(final JTabbedPane pane, JTree coursesTree) {
+    public ButtonTabComponent(final JTabbedPane pane) {
         //unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if (pane == null) {
             throw new NullPointerException("TabbedPane is null");
         }
-        this.coursesTree = coursesTree;
 
         this.pane = pane;
         setOpaque(false);
@@ -50,7 +51,7 @@ public class ButtonTabComponent extends JPanel {
             int size = 17;
             setPreferredSize(new Dimension(size, size));
             setToolTipText("close this tab");
-            //Make the button looks the same for all Laf's
+            //Make the button looks the same for all Leaf's
             setUI(new BasicButtonUI());
             //Make it transparent
             setContentAreaFilled(false);
@@ -70,7 +71,7 @@ public class ButtonTabComponent extends JPanel {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
                 pane.remove(i);
-                coursesTree.clearSelection();
+                Home.getHome().getCoursesTree().clearSelection();
             }
         }
 

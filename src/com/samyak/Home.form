@@ -49,6 +49,8 @@
           <component id="6f9ff" class="javax.swing.JComboBox" binding="accountTypeComboBox" custom-create="true">
             <constraints/>
             <properties>
+              <editable value="false"/>
+              <enabled value="true"/>
               <font/>
               <maximumSize width="16384" height="32767"/>
               <minimumSize width="35" height="26"/>

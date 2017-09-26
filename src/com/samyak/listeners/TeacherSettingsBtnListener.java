@@ -2,13 +2,15 @@ package com.samyak.listeners;
 
 import com.samyak.Home;
 import com.samyak.components.ButtonTabComponent;
+import com.samyak.components.ErrorMsgDisplay;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TeacherSettingsBtnListener implements ActionListener {
-    Home home;
+    private Home home;
 
     public TeacherSettingsBtnListener(Home home) {
         this.home = home;
@@ -18,17 +20,23 @@ public class TeacherSettingsBtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JTabbedPane tabbedPane = home.getContentDisplayTabbedPane();
 
+        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getAccountTypeComboBox().getSelectedItem().toString().equals("Teacher")) {
+            new ErrorMsgDisplay("Not Signed in. Sign in or Sign up as a Teacher.", (Component) e.getSource());
+            return;
+        }
+
         // if already opened, switch to it and return
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            if (tabbedPane.getComponentAt(i).getName().equals("settings")) {
+            if (tabbedPane.getComponentAt(i).getName().equals("Settings")) {
                 tabbedPane.setSelectedIndex(i);
                 return;
             }
         }
 
+        // creating settings tab from utility function
         JScrollPane scrollPane = home.getUtil().createTeacherSettingsTab();
         tabbedPane.addTab("Settings", scrollPane);
         tabbedPane.setSelectedComponent(scrollPane);
-        tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane, home.getCoursesTree()));
+        tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane));
     }
 }

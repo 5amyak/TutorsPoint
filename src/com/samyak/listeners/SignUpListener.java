@@ -23,10 +23,11 @@ public class SignUpListener implements ActionListener {
             String dbName = signUpDialog.getDbName();
             String name = signUpDialog.getUserName().getText().trim();
             String email = signUpDialog.getEmail().getText().trim();
-            String passwd = "";
+            StringBuilder passwdBuilder = new StringBuilder();
             for (char c: signUpDialog.getPasswd().getPassword()) {
-                passwd += c;
+                passwdBuilder.append(c);
             }
+            String passwd = passwdBuilder.toString();
             String gender = "";
             if (signUpDialog.getMaleRadioButton().isSelected())
                 gender = "Male";
@@ -34,8 +35,8 @@ public class SignUpListener implements ActionListener {
                 gender = "Female";
 
             // Fields Checking
-            if (gender == "" || name == "")
-                throw new Exception("Fill Form Properly");
+            if (gender.equals("") || name.equals(""))
+                throw new Exception("Fill Form Completely");
             String regexp = "^(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$";
             if (!passwd.matches(regexp))
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
@@ -47,7 +48,7 @@ public class SignUpListener implements ActionListener {
             PasswordAuthentication authentication = new PasswordAuthentication();
             passwd = authentication.hash(passwd.toCharArray());
 
-            // SQL
+            // SQL to store data of new user
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint","root","");
@@ -68,17 +69,18 @@ public class SignUpListener implements ActionListener {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            Home.setUserId(rs.getInt(1));
-            Home.setUserName(name);
+            Home.getHome().setUserId(rs.getInt(1));
+            Home.getHome().setUserName(name);
+            Home.getHome().getAccountTypeComboBox().setEnabled(false);
 
 
             // data inserted successfully
-            new ErrorMsgDisplay("Successfully Signed Up!!!", signUpDialog.getSignUpForm());
+            new ErrorMsgDisplay(String.format("%s Successfully Signed Up!!!", name), signUpDialog.getSignUpPanel());
             con.close();
             signUpDialog.onCancel();
         } catch (Exception e1) {
             e1.printStackTrace();
-            new ErrorMsgDisplay(e1.getMessage(), signUpDialog.getSignUpForm());
+            new ErrorMsgDisplay(e1.getMessage(), signUpDialog.getSignUpPanel());
         }
 
     }

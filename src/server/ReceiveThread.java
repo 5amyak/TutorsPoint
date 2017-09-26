@@ -29,20 +29,8 @@ public class ReceiveThread implements Runnable{
                 System.out.println("Received:" + size);
             }while (size > 0);
 
-            // SQL
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
-            String sql = "INSERT INTO videos (`subtopic_id`, `name`, `path`) VALUES (?, ?, ?)";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, 2);
-            stmt.setString(2, "Video Name");
-            stmt.setString(3, fileName);
-            stmt.executeUpdate();
-
             // data inserted successfully
             System.out.println("Video Uploaded!!!");
-            con.close();
 
             System.out.println("Receive Thread ended.");
             fout.close();

@@ -3,13 +3,12 @@ package com.samyak.listeners;
 import com.samyak.Home;
 import com.samyak.components.SignUpDialog;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SignUpHomeBtnListener implements ActionListener {
     private Home home;
-    private JFrame signUpFrame;
+    private SignUpDialog signUpDialog;
 
     public SignUpHomeBtnListener(Home home) {
         this.home = home;
@@ -17,16 +16,15 @@ public class SignUpHomeBtnListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (signUpFrame == null || !signUpFrame.isDisplayable()) {
-            this.signUpFrame = new JFrame("SignUpDialog");
-            signUpFrame.setContentPane(new SignUpDialog(home.getAccountTypeComboBox().getSelectedItem().toString()).getScrollPane());
-            signUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            signUpFrame.pack();
-            signUpFrame.setLocationRelativeTo(home.getHomePanel());
-            signUpFrame.setVisible(true);
+        if (signUpDialog == null || !signUpDialog.isDisplayable()) {
+            this.signUpDialog = new SignUpDialog(home.getAccountTypeComboBox().getSelectedItem().toString());
+            signUpDialog.setContentPane(signUpDialog.getScrollPane());
+            signUpDialog.pack();
+            signUpDialog.setLocationRelativeTo(home.getHomePanel());
+            signUpDialog.setVisible(true);
         }
         else {
-            signUpFrame.setVisible(true);
+            signUpDialog.setVisible(true);
         }
     }
 }

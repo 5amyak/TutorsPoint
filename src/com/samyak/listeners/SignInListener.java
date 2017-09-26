@@ -23,10 +23,11 @@ public class SignInListener implements ActionListener {
             // Storing Form Fields
             String dbName = signInDialog.getDbName();
             String email = signInDialog.getEmail().getText().trim();
-            String passwd = "";
+            StringBuilder passwdBuilder = new StringBuilder();
             for (char c: signInDialog.getPasswd().getPassword()) {
-                passwd += c;
+                passwdBuilder.append(c);
             }
+            String passwd = passwdBuilder.toString();
 
             // Field Validation
             String regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
@@ -36,7 +37,7 @@ public class SignInListener implements ActionListener {
             if (!passwd.matches(regexp))
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
 
-            // SQL
+            // SQL to check entered values with database
             String idType;
             if (dbName.equals("students"))
                 idType = "student_id";
@@ -54,8 +55,9 @@ public class SignInListener implements ActionListener {
                 PasswordAuthentication authentication = new PasswordAuthentication();
                 if (!authentication.authenticate(passwd.toCharArray(), rs.getString(3)))
                     throw new Exception("Email or Password is Incorrect.");
-                Home.setUserId(rs.getInt(1));
-                Home.setUserName(rs.getString(2));
+                Home.getHome().setUserId(rs.getInt(1));
+                Home.getHome().setUserName(rs.getString(2));
+                Home.getHome().getAccountTypeComboBox().setEnabled(false);
             }
             else
                 throw new Exception("Email or Password is Incorrect.");

@@ -3,10 +3,12 @@ package com.samyak.components;
 import com.samyak.listeners.SignInListener;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SignInDialog extends JDialog{
-    JScrollPane scrollPane;
-    private JPanel signInFrame;
+    private JScrollPane scrollPane;
+    private JPanel signInPanel;
     private JButton cancelButton;
     private JTextField email;
     private JPasswordField passwd;
@@ -20,16 +22,23 @@ public class SignInDialog extends JDialog{
         else
             dbName = "teachers";
 
-        scrollPane = new JScrollPane(signInFrame);
+        scrollPane = new JScrollPane(signInPanel);
         signInButton.addActionListener(new SignInListener(this));
         cancelButton.addActionListener(e -> onCancel());
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
 
     }
 
     public void onCancel() {
         // closing JDialog
-        JFrame frame = (JFrame)SwingUtilities.getRoot(signInFrame);
-        frame.dispose();
+        this.dispose();
     }
 
     public JTextField getEmail() {
@@ -40,8 +49,8 @@ public class SignInDialog extends JDialog{
         return passwd;
     }
 
-    public JPanel getSignInFrame() {
-        return signInFrame;
+    public JPanel getSignInPanel() {
+        return signInPanel;
     }
 
     public String getDbName() {

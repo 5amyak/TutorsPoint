@@ -9,14 +9,8 @@ import com.samyak.listeners.TreeNodeSelectListener;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class Home {
     private JPanel homePanel;
@@ -30,13 +24,15 @@ public class Home {
     private JTextField searchTextField;
     private JButton settingsButton;
     private Utilities util;
-    private static String userName;
-    private static int userId;
+    private DefaultMutableTreeNode coursesTreeTop;
+    private String userName;
+    private int userId;
+    private static Home home;
 
     public Home() {
         this.userId = -1;
         this.userName = "";
-        util = new Utilities();
+        this.home = this;
 
         signInHomeBtn.addActionListener(new SignInHomeBtnListener(this));
         signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(this));
@@ -65,42 +61,15 @@ public class Home {
     }
 
     private void createUIComponents() {
+        util = new Utilities();
+        // creating combo box on coursesTreeTop panel to select account type before signIn/Up
         String accountType[]={"Student", "Teacher"};
         accountTypeComboBox = new JComboBox(accountType);
 
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("Courses");
-        createNodes(top);
-        coursesTree = new JTree(top);
-    }
-
-    public void createNodes(DefaultMutableTreeNode top) {
-        DefaultMutableTreeNode course;
-        DefaultMutableTreeNode subtopic;
-
-        // SQL
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, teacher_id, name FROM courses");
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                int course_id = rs.getInt(1);
-                course = new DefaultMutableTreeNode(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3)));
-                top.add(course);
-                stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
-                stmt.setInt(1, course_id);
-                ResultSet nrs = stmt.executeQuery();
-                while(nrs.next()) {
-                    subtopic = new DefaultMutableTreeNode(new Subtopic(nrs.getInt(1), nrs.getString(2), nrs.getString(3)));
-                    course.add(subtopic);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // creating coursesTree on side panel using utility function
+        coursesTreeTop = new DefaultMutableTreeNode("Courses");
+        util.createNodes(coursesTreeTop);
+        coursesTree = new JTree(coursesTreeTop);
     }
 
     public JPanel getHomePanel() {
@@ -147,19 +116,28 @@ public class Home {
         return util;
     }
 
-    public static String getUserName() {
+    public DefaultMutableTreeNode getCoursesTreeTop() {
+        return coursesTreeTop;
+    }
+
+    public String getUserName() {
         return userName;
     }
 
-    public static int getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public static void setUserName(String userName) {
-        Home.userName = userName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public static void setUserId(int userId) {
-        Home.userId = userId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
+
+    public static Home getHome() {
+        return home;
+    }
+
 }

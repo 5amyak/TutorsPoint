@@ -1,16 +1,23 @@
 package com.samyak;
 
+import com.samyak.components.UploadVideoDialog;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 public class UploadThread implements Runnable {
 
-    File file;
+    private File file;
+    private UploadVideoDialog dialog;
 
-    public UploadThread(File file) {
+    public UploadThread(File file, UploadVideoDialog dialog) {
         this.file = file;
+        this.dialog = dialog;
     }
 
     @Override
@@ -36,6 +43,18 @@ public class UploadThread implements Runnable {
                 fin.close();
                 dos.close();
                 socket.close();
+
+                // SQL
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                String sql = "INSERT INTO videos (`subtopic_id`, `name`, `path`) VALUES (?, ?, ?)";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, ((Subtopic) dialog.getSubtopicsComboBox().getSelectedItem()).getSubtopicId());
+                stmt.setString(2, dialog.getVideoNameField().getText().trim());
+                stmt.setString(3, file.getName());
+                stmt.executeUpdate();
+                con.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
