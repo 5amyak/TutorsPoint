@@ -1,14 +1,13 @@
 package com.samyak;
 
 import com.samyak.includes.Utilities;
-import com.samyak.listeners.SignInHomeBtnListener;
-import com.samyak.listeners.SignUpHomeBtnListener;
-import com.samyak.listeners.TeacherSettingsBtnListener;
-import com.samyak.listeners.TreeNodeSelectListener;
+import com.samyak.listeners.*;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -48,6 +47,7 @@ public class Home {
 
         settingsButton.addActionListener(new TeacherSettingsBtnListener(this));
 
+        searchButton.addActionListener(new SearchButtonListener(this));
     }
 
     public static void main(String[] args) {

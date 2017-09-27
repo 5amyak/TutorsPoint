@@ -10,8 +10,62 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Utilities {
+
+    private void createVideoPanels(ArrayList<PlayButton> playButtons, JPanel tabPanel) {
+        // creating video panel for each video in a subtopic
+        // like and watch later buttons have setName() to get video id later
+        // info about position, padding, look of component
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(3, 5, 3, 5);
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        for (int i = 0; i < playButtons.size(); i++) {
+
+            JPanel videoPanel = new JPanel();
+            GridBagConstraints c = new GridBagConstraints();
+
+            videoPanel.setLayout(new GridBagLayout());
+            c.gridx = 0;
+            c.gridy = 0;
+            c.gridwidth = 2;
+            c.insets = new Insets(5, 3, 5, 3);
+            JLabel videoNameLabel = new JLabel(playButtons.get(i).getVideoName());
+            videoPanel.add(videoNameLabel, c);
+            c.gridx = 0;
+            c.gridy = 1;
+            c.gridwidth = 1;
+            JButton playBtn = playButtons.get(i);
+            playBtn.addActionListener(new PlayBtnListener());
+            videoPanel.add(playBtn, c);
+            c.gridx = 1;
+            c.gridy = 1;
+            c.gridwidth = 1;
+            JButton likeBtn = new JButton("Like");
+            likeBtn.addActionListener(new LikeBtnListener());
+            likeBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
+            videoPanel.add(likeBtn, c);
+            c.gridx = 0;
+            c.gridy = 2;
+            c.gridwidth = 2;
+            JButton watchLaterBtn = new JButton("Add to WatchList");
+            watchLaterBtn.addActionListener(new WatchLaterBtnListener());
+            watchLaterBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
+            videoPanel.add(watchLaterBtn, c);
+
+            tabPanel.add(videoPanel, gbc);
+            gbc.gridx++;
+            if (gbc.gridx == 3) {
+                gbc.gridx = 0;
+                gbc.gridy++;
+            }
+        }
+    }
 
     public JScrollPane createVideoTab(Subtopic subtopic) {
         JPanel tabPanel = new JPanel();
@@ -21,14 +75,8 @@ public class Utilities {
         scrollPane.setName(Integer.toString(subtopic.getSubtopicId() * -1));
         tabPanel.setLayout(new GridBagLayout());
 
-        // info about position, padding, look of component
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(3, 5, 3, 5);
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.5;
-        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        // all play buttons corresponding to the video tab
+        ArrayList<PlayButton> playButtons = new ArrayList<>();
 
         // SQL to set info about video on its play button and like button
         try {
@@ -39,47 +87,13 @@ public class Utilities {
             stmt.setInt(1, subtopic.getSubtopicId());
             ResultSet rs = stmt.executeQuery();
 
-            // creating video panel for each video in a subtopic
-            // like and watch later buttons have setName() to get video id later
+            // creating play buttons for each video in a subtopic
             while (rs.next()) {
-                JPanel videoPanel = new JPanel();
-                GridBagConstraints c = new GridBagConstraints();
-
-                videoPanel.setLayout(new GridBagLayout());
-                c.gridx = 0;
-                c.gridy = 0;
-                c.gridwidth = 2;
-                c.insets = new Insets(5, 3, 5, 3);
-                JLabel videoNameLabel = new JLabel(rs.getString(2));
-                videoPanel.add(videoNameLabel, c);
-                c.gridx = 0;
-                c.gridy = 1;
-                c.gridwidth = 1;
-                JButton playBtn = new PlayButton(rs.getInt(1), rs.getString(2), rs.getString(3));
-                playBtn.addActionListener(new PlayBtnListener());
-                videoPanel.add(playBtn, c);
-                c.gridx = 1;
-                c.gridy = 1;
-                c.gridwidth = 1;
-                JButton likeBtn = new JButton("Like");
-                likeBtn.addActionListener(new LikeBtnListener());
-                likeBtn.setName(Integer.toString(rs.getInt(1)));
-                videoPanel.add(likeBtn, c);
-                c.gridx = 0;
-                c.gridy = 2;
-                c.gridwidth = 2;
-                JButton watchLaterBtn = new JButton("Add to WatchList");
-                watchLaterBtn.addActionListener(new WatchLaterBtnListener());
-                watchLaterBtn.setName(Integer.toString(rs.getInt(1)));
-                videoPanel.add(watchLaterBtn, c);
-
-                tabPanel.add(videoPanel, gbc);
-                gbc.gridx++;
-                if (gbc.gridx == 3) {
-                    gbc.gridx = 0;
-                    gbc.gridy++;
-                }
+                playButtons.add(new PlayButton(rs.getInt(1), rs.getString(2), rs.getString(3)));
             }
+            con.close();
+
+            createVideoPanels(playButtons, tabPanel);
 
         } catch (Exception e) {
             e.printStackTrace();
