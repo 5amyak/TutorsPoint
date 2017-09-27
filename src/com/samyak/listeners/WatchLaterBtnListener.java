@@ -28,18 +28,17 @@ public class WatchLaterBtnListener implements ActionListener {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            String sql = "INSERT INTO `watchlist`(`student_id`, `video_id`) VALUES (?, ?)";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, Home.getHome().getUserId());
-            stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
-            stmt.executeUpdate();
+            if (((JButton) e.getSource()).getText().equals("Add to WatchList")) {
+                String sql = "INSERT INTO `watchlist`(`student_id`, `video_id`) VALUES (?, ?)";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, Home.getHome().getUserId());
+                stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
+                stmt.executeUpdate();
 
-            // data inserted successfully
-            new ErrorMsgDisplay("Successfully Added to Watch List!!!", (Component) e.getSource());
-            con.close();
-
-        } catch (MySQLIntegrityConstraintViolationException e1) {
-            try {
+                // data inserted successfully
+                new ErrorMsgDisplay("Successfully Added to Watch List!!!", (Component) e.getSource());
+                ((JButton) e.getSource()).setText("Remove from WatchList");
+            } else {
                 String sql = "DELETE FROM `watchlist` WHERE `student_id`=? AND `video_id`=?";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, Home.getHome().getUserId());
@@ -48,12 +47,18 @@ public class WatchLaterBtnListener implements ActionListener {
 
                 // data deleted successfully
                 new ErrorMsgDisplay("Successfully Removed from Watchlist!!!", (Component) e.getSource());
-                con.close();
-            } catch (SQLException e2) {
-                e2.printStackTrace();
+                ((JButton) e.getSource()).setText("Add to WatchList");
             }
+
+
+            con.close();
+
+        } catch (MySQLIntegrityConstraintViolationException e1) {
+            new ErrorMsgDisplay("Already added to WatchList. Press again to remove.", (Container) e.getSource());
+            ((JButton) e.getSource()).setText("Remove from WatchList");
         } catch (Exception e1) {
             e1.printStackTrace();
+            new ErrorMsgDisplay(e1.getMessage(), (Container) e.getSource());
         }
     }
 }

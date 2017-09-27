@@ -68,7 +68,7 @@ public class Utilities {
                 c.gridx = 0;
                 c.gridy = 2;
                 c.gridwidth = 2;
-                JButton watchLaterBtn = new JButton("Watch Later");
+                JButton watchLaterBtn = new JButton("Add to WatchList");
                 watchLaterBtn.addActionListener(new WatchLaterBtnListener());
                 watchLaterBtn.setName(Integer.toString(rs.getInt(1)));
                 videoPanel.add(watchLaterBtn, c);

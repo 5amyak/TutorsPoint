@@ -20,23 +20,21 @@ public class LikeBtnListener implements ActionListener {
         }
 
         // SQL to store user_id and video_id of liked video
-        Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
+            Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            String sql = "INSERT INTO `video_likes`(`student_id`, `video_id`) VALUES (?, ?)";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, Home.getHome().getUserId());
-            stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
-            stmt.executeUpdate();
+            if (((JButton) e.getSource()).getText().equals("Like")) {
+                String sql = "INSERT INTO `video_likes`(`student_id`, `video_id`) VALUES (?, ?)";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, Home.getHome().getUserId());
+                stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
+                stmt.executeUpdate();
 
-            // data inserted successfully
-            new ErrorMsgDisplay("Successfully Liked Video!!!", (Component) e.getSource());
-            con.close();
-
-        } catch (MySQLIntegrityConstraintViolationException e1) {
-            try {
+                // data inserted successfully
+                new ErrorMsgDisplay("Successfully Liked Video!!!", (Component) e.getSource());
+                ((JButton) e.getSource()).setText("Unlike");
+            } else {
                 String sql = "DELETE FROM `video_likes` WHERE `student_id`=? AND `video_id`=?";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, Home.getHome().getUserId());
@@ -45,12 +43,16 @@ public class LikeBtnListener implements ActionListener {
 
                 // data deleted successfully
                 new ErrorMsgDisplay("Successfully UnLiked Video!!!", (Component) e.getSource());
-                con.close();
-            } catch (SQLException e2) {
-                e2.printStackTrace();
+                ((JButton) e.getSource()).setText("Like");
             }
+            con.close();
+
+        } catch (MySQLIntegrityConstraintViolationException e1) {
+            new ErrorMsgDisplay("You've already liked the video. Press Again to unlike.", (Component) e.getSource());
+            ((JButton) e.getSource()).setText("Unlike");
         } catch (Exception e1) {
             e1.printStackTrace();
         }
     }
+
 }
