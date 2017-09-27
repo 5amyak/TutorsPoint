@@ -37,8 +37,6 @@ public class UploadVideoListener implements ActionListener {
             File file = fc.getSelectedFile();
             System.out.println(file.getName());
 
-            ((JButton) e.getSource()).setEnabled(false);
-
             //This is where a real application would open the file.
             Thread uploadThread = new Thread(new UploadThread(file, dialog));
             uploadThread.start();

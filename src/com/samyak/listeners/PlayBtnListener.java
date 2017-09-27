@@ -1,6 +1,7 @@
 package com.samyak.listeners;
 
 import com.samyak.DownloadThread;
+import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.components.MediaPlayer;
 import com.samyak.components.PlayButton;
 
@@ -18,7 +19,9 @@ public class PlayBtnListener implements ActionListener {
     }
 
     private synchronized void createDownloadThread(String filePath, PlayButton playButton) {
-        if (!new File(filePath).isFile()) {
+        if (playButton.getVideoPath().equals("")) {
+            new ErrorMsgDisplay("Please wait while video is getting uploaded.", playButton);
+        } else if (!new File(filePath).isFile()) {
             Thread downloadThread = new Thread(new DownloadThread(playButton));
             downloadThread.start();
         }

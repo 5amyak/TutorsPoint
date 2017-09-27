@@ -37,6 +37,15 @@ public class UploadThread implements Runnable {
             rs.next();
             int nextVideoId = rs.getInt(1);
 
+            // SQL to insert available info about video on database
+            sql = "INSERT INTO videos (video_id, subtopic_id, name, path) VALUES(?, ?, ?, \"\")";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, nextVideoId);
+            stmt.setInt(2, ((Subtopic) dialog.getSubtopicsComboBox().getSelectedItem()).getSubtopicId());
+            stmt.setString(3, dialog.getVideoNameField().getText().trim());
+            stmt.executeUpdate();
+            con.close();
+
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             dos.writeInt(nextVideoId);
 
@@ -56,19 +65,10 @@ public class UploadThread implements Runnable {
             dos.close();
             socket.close();
 
-            // SQL to insert available info about video on database
-            sql = "INSERT INTO videos (`subtopic_id`, `name`, `path`) VALUES (?, ?, ?)";
-            stmt = con.prepareStatement(sql);
-            stmt.setInt(1, ((Subtopic) dialog.getSubtopicsComboBox().getSelectedItem()).getSubtopicId());
-            stmt.setString(2, dialog.getVideoNameField().getText().trim());
-            stmt.setString(3, "");
-            stmt.executeUpdate();
-            con.close();
-
-            new ErrorMsgDisplay("Video uploaded successfully", Home.getHome().getHomePanel());
+            new ErrorMsgDisplay(String.format("%s uploaded successfully", file.getName()), Home.getHome().getHomePanel());
         } catch (Exception e) {
             e.printStackTrace();
-            new ErrorMsgDisplay(e.getMessage(), dialog);
+            new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());
         }
 
         dialog.getButtonUploadVideo().setEnabled(true);

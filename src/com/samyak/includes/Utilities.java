@@ -75,7 +75,7 @@ public class Utilities {
 
                 tabPanel.add(videoPanel, gbc);
                 gbc.gridx++;
-                if (gbc.gridx == 5) {
+                if (gbc.gridx == 3) {
                     gbc.gridx = 0;
                     gbc.gridy++;
                 }

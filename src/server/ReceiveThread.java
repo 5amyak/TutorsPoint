@@ -1,17 +1,16 @@
 package server;
 
-import com.samyak.Subtopic;
-
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ReceiveThread implements Runnable{
+public class ReceiveThread implements Runnable {
     private Socket socket;
     private int nextVideoId;
 
@@ -20,8 +19,9 @@ public class ReceiveThread implements Runnable{
         this.nextVideoId = nextVideoId;
     }
 
-    public void run(){
+    public void run() {
         DataInputStream dis;
+        Connection con;
         try {
             System.out.println("Receiving from server.");
             dis = new DataInputStream(socket.getInputStream());
@@ -36,7 +36,7 @@ public class ReceiveThread implements Runnable{
                 size = dis.read(b);
                 fout.write(b);
                 System.out.println("Received:" + size);
-            }while (size > 0);
+            } while (size > 0);
 
             // data inserted successfully
             System.out.println("Video Uploaded!!!");
@@ -45,17 +45,30 @@ public class ReceiveThread implements Runnable{
             fout.close();
             dis.close();
 
+            // SQL to update path for video on server
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
+            con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            String sql = "UPDATE videos SET path = ? WHERE video_id = ?";
+            String sql = "UPDATE videos SET path=? WHERE video_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, fileName);
             stmt.setInt(2, nextVideoId);
             stmt.executeUpdate();
             con.close();
+
         } catch (Exception ex) {
             ex.printStackTrace();
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                String sql = "DELETE FROM videos WHERE video_id=?";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, nextVideoId);
+                stmt.executeUpdate();
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
