@@ -20,10 +20,10 @@ public class NewClientThread implements Runnable {
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
             DataInputStream dis = new DataInputStream(socket.getInputStream());
-            char type = dis.readChar();
-            System.out.println(type);
+            int nextVideoId = dis.readInt();
+            System.out.println(nextVideoId);
 
-            if (type == 'D') {
+            if (nextVideoId == -1) {
                 // repeatedly taking input and sending to server
                 System.out.println("Sending File from Server to Client:");
 
@@ -42,7 +42,7 @@ public class NewClientThread implements Runnable {
 
             else {
                 //Starting thread that will continuosly listen for any input from server
-                Thread receivingThread = new Thread(new ReceiveThread(socket));
+                Thread receivingThread = new Thread(new ReceiveThread(socket, nextVideoId));
                 receivingThread.start();
                 receivingThread.join();
             }

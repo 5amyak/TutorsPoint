@@ -26,7 +26,7 @@ public class DownloadThread implements Runnable {
             Socket socket = new Socket("localhost", 5000);
 
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            dos.writeChar(68);
+            dos.writeInt(-1);
             dos.writeUTF(playButton.getVideoPath());
             System.out.println("File Name Send from client.");
 

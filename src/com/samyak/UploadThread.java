@@ -1,5 +1,6 @@
 package com.samyak;
 
+import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.components.UploadVideoDialog;
 
 import java.io.DataOutputStream;
@@ -9,6 +10,7 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UploadThread implements Runnable {
 
@@ -22,41 +24,53 @@ public class UploadThread implements Runnable {
 
     @Override
     public void run() {
-            try {
-                Socket socket = new Socket("localhost", 5000);
+        try {
+            Socket socket = new Socket("localhost", 5000);
 
-                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-                dos.writeChar(85);
+            // SQL to get video_id of next entry
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'videos'";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            int nextVideoId = rs.getInt(1);
 
-                // uploading file and sending to server
-                System.out.println("Uploading File: " + file.getName());
-                FileInputStream fin = new FileInputStream(file);
-                int size;
-                do {
-                    byte b[] = new byte[1024];
-                    size = fin.read(b);
-                    System.out.println("Read: " + size);
-                    dos.write(b);
-                } while (size > 0);
-                System.out.println("File Send from client.");
-                System.out.println("Upload Thread ended.");
-                fin.close();
-                dos.close();
-                socket.close();
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            dos.writeInt(nextVideoId);
 
-                // SQL
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-                String sql = "INSERT INTO videos (`subtopic_id`, `name`, `path`) VALUES (?, ?, ?)";
-                PreparedStatement stmt = con.prepareStatement(sql);
-                stmt.setInt(1, ((Subtopic) dialog.getSubtopicsComboBox().getSelectedItem()).getSubtopicId());
-                stmt.setString(2, dialog.getVideoNameField().getText().trim());
-                stmt.setString(3, file.getName());
-                stmt.executeUpdate();
-                con.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // uploading file and sending to server
+            System.out.println("Uploading File: " + file.getName());
+            FileInputStream fin = new FileInputStream(file);
+            int size;
+            do {
+                byte b[] = new byte[1024];
+                size = fin.read(b);
+                System.out.println("Read: " + size);
+                dos.write(b);
+            } while (size > 0);
+            System.out.println("File Send from client.");
+            System.out.println("Upload Thread ended.");
+            fin.close();
+            dos.close();
+            socket.close();
+
+            // SQL to insert available info about video on database
+            sql = "INSERT INTO videos (`subtopic_id`, `name`, `path`) VALUES (?, ?, ?)";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, ((Subtopic) dialog.getSubtopicsComboBox().getSelectedItem()).getSubtopicId());
+            stmt.setString(2, dialog.getVideoNameField().getText().trim());
+            stmt.setString(3, "");
+            stmt.executeUpdate();
+            con.close();
+
+            new ErrorMsgDisplay("Video uploaded successfully", Home.getHome().getHomePanel());
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), dialog);
+        }
+
+        dialog.getButtonUploadVideo().setEnabled(true);
     }
 }

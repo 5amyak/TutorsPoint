@@ -14,17 +14,20 @@ import java.util.ArrayList;
 
 public class UploadVideoDialog extends JDialog {
     private JPanel contentPane;
-    private JButton buttonOK;
+    private JButton buttonUploadVideo;
     private JButton buttonCancel;
     private JComboBox subtopicsComboBox;
     private JTextField videoNameField;
+    private int nextVideoId;
 
     public UploadVideoDialog() {
+        this.nextVideoId = -1;
+
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        getRootPane().setDefaultButton(buttonUploadVideo);
 
-        buttonOK.addActionListener(new UploadVideoListener(this));
+        buttonUploadVideo.addActionListener(new UploadVideoListener(this));
 
         buttonCancel.addActionListener(e -> onCancel());
 
@@ -84,5 +87,17 @@ public class UploadVideoDialog extends JDialog {
 
     public JTextField getVideoNameField() {
         return videoNameField;
+    }
+
+    public JButton getButtonUploadVideo() {
+        return buttonUploadVideo;
+    }
+
+    public int getNextVideoId() {
+        return nextVideoId;
+    }
+
+    public void setNextVideoId(int nextVideoId) {
+        this.nextVideoId = nextVideoId;
     }
 }

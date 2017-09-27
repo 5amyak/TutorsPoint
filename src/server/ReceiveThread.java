@@ -1,5 +1,7 @@
 package server;
 
+import com.samyak.Subtopic;
+
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.net.Socket;
@@ -10,7 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReceiveThread implements Runnable{
-    Socket socket;
+    private Socket socket;
+    private int nextVideoId;
+
+    public ReceiveThread(Socket socket, int nextVideoId) {
+        this.socket = socket;
+        this.nextVideoId = nextVideoId;
+    }
+
     public void run(){
         DataInputStream dis;
         try {
@@ -35,11 +44,18 @@ public class ReceiveThread implements Runnable{
             System.out.println("Receive Thread ended.");
             fout.close();
             dis.close();
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "UPDATE videos SET path = ? WHERE video_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, fileName);
+            stmt.setInt(2, nextVideoId);
+            stmt.executeUpdate();
+            con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-    public ReceiveThread(Socket sock){
-        this.socket = sock;
     }
 }

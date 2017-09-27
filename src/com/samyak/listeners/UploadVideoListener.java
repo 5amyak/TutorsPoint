@@ -20,8 +20,15 @@ public class UploadVideoListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String videoName = dialog.getVideoNameField().getText().trim();
-        if (videoName.equals(""))
+        if (videoName.equals("")) {
             new ErrorMsgDisplay("* marked fields are mandatory.", dialog.getContentPane());
+            return;
+        }
+        if (dialog.getSubtopicsComboBox().getItemCount() == 0) {
+            new ErrorMsgDisplay("Add subtopics to your courses before uploading videos.", dialog.getContentPane());
+            return;
+        }
+
 
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog((Component)e.getSource());
@@ -29,6 +36,8 @@ public class UploadVideoListener implements ActionListener {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             System.out.println(file.getName());
+
+            ((JButton) e.getSource()).setEnabled(false);
 
             //This is where a real application would open the file.
             Thread uploadThread = new Thread(new UploadThread(file, dialog));
