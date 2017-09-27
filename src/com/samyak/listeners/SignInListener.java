@@ -57,7 +57,13 @@ public class SignInListener implements ActionListener {
                     throw new Exception("Email or Password is Incorrect.");
                 Home.getHome().setUserId(rs.getInt(1));
                 Home.getHome().setUserName(rs.getString(2));
-                Home.getHome().getAccountTypeComboBox().setEnabled(false);
+
+                if (dbName.equals("students"))
+                    Home.getHome().getAccountTypeComboBox().removeItemAt(1);
+                else
+                    Home.getHome().getAccountTypeComboBox().removeItemAt(0);
+                Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
+                Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
             }
             else
                 throw new Exception("Email or Password is Incorrect.");

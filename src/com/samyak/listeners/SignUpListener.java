@@ -71,8 +71,13 @@ public class SignUpListener implements ActionListener {
             rs.next();
             Home.getHome().setUserId(rs.getInt(1));
             Home.getHome().setUserName(name);
-            Home.getHome().getAccountTypeComboBox().setEnabled(false);
 
+            if (dbName.equals("students"))
+                Home.getHome().getAccountTypeComboBox().removeItemAt(1);
+            else
+                Home.getHome().getAccountTypeComboBox().removeItemAt(0);
+            Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
+            Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
 
             // data inserted successfully
             new ErrorMsgDisplay(String.format("%s Successfully Signed Up!!!", name), signUpDialog.getSignUpPanel());
