@@ -24,7 +24,6 @@ public class Home {
     private JTextField searchTextField;
     private JButton settingsButton;
     private Utilities util;
-    private DefaultMutableTreeNode coursesTreeTop;
     private String userName;
     private int userId;
     private static Home home;
@@ -67,7 +66,7 @@ public class Home {
         accountTypeComboBox = new JComboBox(accountType);
 
         // creating coursesTree on side panel using utility function
-        coursesTreeTop = new DefaultMutableTreeNode("Courses");
+        DefaultMutableTreeNode coursesTreeTop = new DefaultMutableTreeNode("Courses");
         util.createNodes(coursesTreeTop);
         coursesTree = new JTree(coursesTreeTop);
     }
@@ -114,10 +113,6 @@ public class Home {
 
     public Utilities getUtil() {
         return util;
-    }
-
-    public DefaultMutableTreeNode getCoursesTreeTop() {
-        return coursesTreeTop;
     }
 
     public String getUserName() {

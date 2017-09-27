@@ -3,6 +3,8 @@ package com.samyak.components;
 import com.samyak.Home;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -56,6 +58,12 @@ public class CreateCourseDialog extends JDialog {
             new ErrorMsgDisplay(String.format("%s Course Created Successfully!!!", courseName), this.contentPane);
             con.close();
             this.onCancel();
+
+            DefaultTreeModel model = (DefaultTreeModel) Home.getHome().getCoursesTree().getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            root.removeAllChildren();
+            Home.getHome().getUtil().createNodes(root);
+            model.reload(root);
         }
         catch (Exception e) {
             e.printStackTrace();

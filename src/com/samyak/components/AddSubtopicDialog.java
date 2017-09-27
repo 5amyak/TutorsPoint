@@ -5,6 +5,8 @@ import com.samyak.Home;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
@@ -67,6 +69,12 @@ public class AddSubtopicDialog extends JDialog {
             new ErrorMsgDisplay(String.format("Subtopic %s Added Successfully to %s!!!", nameField.getText(), courseComboBox.getSelectedItem().toString()), this.contentPane);
             con.close();
             this.onCancel();
+
+            DefaultTreeModel model = (DefaultTreeModel) Home.getHome().getCoursesTree().getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            root.removeAllChildren();
+            Home.getHome().getUtil().createNodes(root);
+            model.reload(root);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +100,7 @@ public class AddSubtopicDialog extends JDialog {
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             while (rs.next()) {
-                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(3), rs.getInt(4)));
+                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2), rs.getInt(3)));
             }
             con.close();
 
