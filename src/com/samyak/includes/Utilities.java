@@ -57,6 +57,13 @@ public class Utilities {
             watchLaterBtn.addActionListener(new WatchLaterBtnListener());
             watchLaterBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
             videoPanel.add(watchLaterBtn, c);
+            c.gridx = 0;
+            c.gridy = 3;
+            c.gridwidth = 2;
+            JButton commentBtn = new JButton("Comment");
+            commentBtn.addActionListener(new CommentBtnListener());
+            commentBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
+            videoPanel.add(commentBtn, c);
 
             tabPanel.add(videoPanel, gbc);
             gbc.gridx++;

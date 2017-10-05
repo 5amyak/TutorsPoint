@@ -6,8 +6,6 @@ import com.samyak.listeners.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -23,11 +21,12 @@ public class Home {
     private JTextField searchTextField;
     private JButton settingsButton;
     private Utilities util;
+    private String userType;
     private String userName;
     private int userId;
     private static Home home;
 
-    public Home() {
+    private Home() {
         this.userId = -1;
         this.userName = "";
         this.home = this;
@@ -129,6 +128,14 @@ public class Home {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     public static Home getHome() {

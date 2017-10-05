@@ -58,10 +58,13 @@ public class SignInListener implements ActionListener {
                 Home.getHome().setUserId(rs.getInt(1));
                 Home.getHome().setUserName(rs.getString(2));
 
-                if (dbName.equals("students"))
+                if (dbName.equals("students")) {
                     Home.getHome().getAccountTypeComboBox().removeItemAt(1);
-                else
+                    Home.getHome().setUserType("student");
+                } else {
                     Home.getHome().getAccountTypeComboBox().removeItemAt(0);
+                    Home.getHome().setUserType("teacher");
+                }
                 Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
                 Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
             }

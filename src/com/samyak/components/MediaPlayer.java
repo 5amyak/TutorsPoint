@@ -1,5 +1,6 @@
 package com.samyak.components;
 
+import com.samyak.listeners.CommentBtnListener;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
@@ -16,6 +17,7 @@ public class MediaPlayer {
     private JButton pauseButton;
     private JButton rewindButton;
     private JButton skipButton;
+    private JButton commentButton;
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
     public MediaPlayer(PlayButton playButton) {
