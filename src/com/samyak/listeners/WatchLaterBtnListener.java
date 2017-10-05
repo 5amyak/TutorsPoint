@@ -17,7 +17,7 @@ public class WatchLaterBtnListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getAccountTypeComboBox().getSelectedItem().toString().equals("Student")) {
+        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getUserType().equals("student")) {
             new ErrorMsgDisplay("Not Signed in. Sign in or Sign up as a Student.", (Component) e.getSource());
             return;
         }

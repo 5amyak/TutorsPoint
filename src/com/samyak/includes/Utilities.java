@@ -160,7 +160,7 @@ public class Utilities {
             gbc.gridx = 1;
             gbc.gridy = 2;
             gbc.gridwidth = 1;
-            JButton subscribeBtn = new JButton(String.format("Subscribe to %s", rs.getString(1)));
+            JButton subscribeBtn = new JButton("Subscribe");
             subscribeBtn.addActionListener(new SubscribeBtnListener());
             subscribeBtn.setName(Integer.toString(course.getTeacherId()));
             tabPanel.add(subscribeBtn, gbc);

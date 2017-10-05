@@ -14,7 +14,7 @@ public class LikeBtnListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getAccountTypeComboBox().getSelectedItem().toString().equals("Student")) {
+        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getUserType().equals("student")) {
             new ErrorMsgDisplay("Not Signed in. Sign in or Sign up as a Student.", (Component) e.getSource());
             return;
         }
@@ -31,6 +31,11 @@ public class LikeBtnListener implements ActionListener {
                 stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
                 stmt.executeUpdate();
 
+                sql = "UPDATE `videos` SET `likes`= `likes`+1 WHERE `video_id`=?";
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, Integer.parseInt(((JButton) e.getSource()).getName()));
+                stmt.executeUpdate();
+
                 // data inserted successfully
                 new ErrorMsgDisplay("Successfully Liked Video!!!", (Component) e.getSource());
                 ((JButton) e.getSource()).setText("Unlike");
@@ -39,6 +44,11 @@ public class LikeBtnListener implements ActionListener {
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, Home.getHome().getUserId());
                 stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
+                stmt.executeUpdate();
+
+                sql = "UPDATE `videos` SET `likes`= `likes`-1 WHERE `video_id`=?";
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, Integer.parseInt(((JButton) e.getSource()).getName()));
                 stmt.executeUpdate();
 
                 // data deleted successfully
@@ -52,6 +62,7 @@ public class LikeBtnListener implements ActionListener {
             ((JButton) e.getSource()).setText("Unlike");
         } catch (Exception e1) {
             e1.printStackTrace();
+            new ErrorMsgDisplay(e1.getMessage(), (Component) e.getSource());
         }
     }
 
