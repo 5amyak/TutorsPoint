@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="283.0" y="-1.0">com.samyak.components.CreateCourseDialog</node>
+    <node x="428.17218137254906" y="257.0">com.samyak.Home</node>
+    <node x="292.35539215686276" y="158.0">com.samyak.includes.Utilities</node>
+    <node x="455.17218137254906" y="0.0">com.samyak.components.AddSubtopicDialog</node>
+    <node x="610.0" y="158.0">com.samyak.listeners.TeacherSettingsBtnListener</node>
+    <node x="70.5" y="415.0">com.samyak.UploadThread</node>
+    <node x="0.0" y="79.0">com.samyak.listeners.UploadVideoTabBtnListener</node>
+    <node x="215.0" y="79.0">com.samyak.listeners.CreateCourseBtnListener</node>
+    <node x="413.0" y="79.0">com.samyak.listeners.AddSubtopicBtnListener</node>
+    <node x="0.547181372549062" y="336.0">com.samyak.components.UploadVideoDialog</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="437.0" y="234.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

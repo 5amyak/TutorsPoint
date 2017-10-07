@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="627.875" y="189.0">com.samyak.components.CommentForm</node>
+    <node x="295.5" y="612.0">com.samyak.Home</node>
+    <node x="381.0" y="533.0">com.samyak.includes.Utilities</node>
+    <node x="244.00833333333333" y="422.0">com.samyak.listeners.PlayBtnListener</node>
+    <node x="0.0" y="422.0">com.samyak.listeners.WatchLaterBtnListener</node>
+    <node x="215.50833333333333" y="0.0">com.samyak.components.PlayButton</node>
+    <node x="214.875" y="167.0">com.samyak.components.MediaPlayer</node>
+    <node x="690.4749999999999" y="33.0">com.samyak.listeners.AddCommentListener</node>
+    <node x="876.875" y="422.0">com.samyak.listeners.LikeBtnListener</node>
+    <node x="622.875" y="400.0">com.samyak.listeners.CommentBtnListener</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.samyak.components.CommentForm" target="com.samyak.listeners.AddCommentListener">
+      <point x="-74.66666666666669" y="-69.5" />
+      <point x="665.2083333333333" y="147.0" />
+      <point x="719.7249999999999" y="147.0" />
+      <point x="-87.75" y="25.5" />
+    </edge>
+    <edge source="com.samyak.listeners.AddCommentListener" target="com.samyak.components.CommentForm">
+      <point x="29.25" y="25.5" />
+      <point x="836.7249999999999" y="147.0" />
+      <point x="814.5416666666666" y="147.0" />
+      <point x="74.66666666666666" y="-69.5" />
+    </edge>
+    <edge source="com.samyak.listeners.AddCommentListener" target="com.samyak.Home">
+      <point x="87.75" y="25.5" />
+      <point x="895.2249999999999" y="147.0" />
+      <point x="1015.375" y="147.0" />
+      <point x="1015.375" y="592.0" />
+      <point x="558.5833333333334" y="592.0" />
+      <point x="119.58333333333337" y="-179.5" />
+    </edge>
+    <edge source="com.samyak.listeners.PlayBtnListener" target="com.samyak.components.PlayButton">
+      <point x="-32.25" y="-14.5" />
+      <point x="276.2583333333333" y="375.0" />
+      <point x="204.375" y="375.0" />
+      <point x="204.375" y="147.0" />
+      <point x="285.2583333333333" y="147.0" />
+      <point x="-23.25" y="58.5" />
+    </edge>
+    <edge source="com.samyak.includes.Utilities" target="com.samyak.components.PlayButton">
+      <point x="7.25" y="-14.5" />
+      <point x="431.75" y="493.0" />
+      <point x="612.375" y="493.0" />
+      <point x="612.375" y="137.0" />
+      <point x="378.2583333333333" y="137.0" />
+      <point x="69.75000000000003" y="58.5" />
+    </edge>
+    <edge source="com.samyak.listeners.CommentBtnListener" target="com.samyak.components.CommentForm">
+      <point x="58.5" y="-36.5" />
+      <point x="798.375" y="375.0" />
+      <point x="795.875" y="375.0" />
+      <point x="56.0" y="69.5" />
+    </edge>
+    <edge source="com.samyak.components.MediaPlayer" target="com.samyak.components.PlayButton">
+      <point x="0.0" y="-91.5" />
+      <point x="408.375" y="147.0" />
+      <point x="331.7583333333333" y="147.0" />
+      <point x="23.25000000000003" y="58.5" />
+    </edge>
+    <edge source="com.samyak.includes.Utilities" target="com.samyak.listeners.WatchLaterBtnListener">
+      <point x="-36.25" y="-14.5" />
+      <point x="388.25" y="513.0" />
+      <point x="125.25" y="513.0" />
+      <point x="41.75" y="14.5" />
+    </edge>
+    <edge source="com.samyak.listeners.WatchLaterBtnListener" target="com.samyak.Home">
+      <point x="-41.75" y="14.5" />
+      <point x="41.75" y="592.0" />
+      <point x="319.41666666666663" y="592.0" />
+      <point x="-119.58333333333337" y="-179.5" />
+    </edge>
+    <edge source="com.samyak.includes.Utilities" target="com.samyak.listeners.PlayBtnListener">
+      <point x="-7.25" y="-14.5" />
+      <point x="417.25" y="493.0" />
+      <point x="308.5083333333333" y="493.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.samyak.Home" target="com.samyak.includes.Utilities">
+      <point x="-23.916666666666686" y="-179.5" />
+      <point x="415.0833333333333" y="592.0" />
+      <point x="424.5" y="592.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.samyak.includes.Utilities" target="com.samyak.listeners.LikeBtnListener">
+      <point x="36.25" y="-14.5" />
+      <point x="460.75" y="513.0" />
+      <point x="908.875" y="513.0" />
+      <point x="-32.0" y="14.5" />
+    </edge>
+    <edge source="com.samyak.listeners.LikeBtnListener" target="com.samyak.Home">
+      <point x="32.0" y="14.5" />
+      <point x="972.875" y="582.0" />
+      <point x="510.75" y="582.0" />
+      <point x="71.75" y="-179.5" />
+    </edge>
+    <edge source="com.samyak.includes.Utilities" target="com.samyak.listeners.CommentBtnListener">
+      <point x="21.75" y="-14.5" />
+      <point x="446.25" y="503.0" />
+      <point x="739.875" y="503.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="com.samyak.listeners.PlayBtnListener" target="com.samyak.components.MediaPlayer">
+      <point x="32.25" y="-14.5" />
+      <point x="340.7583333333333" y="375.0" />
+      <point x="408.375" y="375.0" />
+      <point x="0.0" y="91.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="420.0" y="200.5" />
+  <SelectedNodes>
+    <node>com.samyak.Home</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
