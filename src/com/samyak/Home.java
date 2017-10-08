@@ -17,6 +17,7 @@ public class Home {
     private JComboBox accountTypeComboBox;
     private JButton signInHomeBtn;
     private JButton signUpHomeBtn;
+    private JButton signOutBtn;
     private JToolBar topToolBar;
     private JTextField searchTextField;
     private JButton settingsButton;
@@ -68,6 +69,9 @@ public class Home {
         DefaultMutableTreeNode coursesTreeTop = new DefaultMutableTreeNode("Courses");
         util.createNodes(coursesTreeTop);
         coursesTree = new JTree(coursesTreeTop);
+
+        signOutBtn = new JButton("Sign Out");
+        signOutBtn.addActionListener(new SignOutListener());
     }
 
     public JPanel getHomePanel() {
@@ -96,6 +100,10 @@ public class Home {
 
     public JButton getSignUpHomeBtn() {
         return signUpHomeBtn;
+    }
+
+    public JButton getSignOutBtn() {
+        return signOutBtn;
     }
 
     public JToolBar getTopToolBar() {

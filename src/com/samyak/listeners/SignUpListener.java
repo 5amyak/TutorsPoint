@@ -5,6 +5,7 @@ import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.includes.PasswordAuthentication;
 import com.samyak.components.SignUpDialog;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -78,6 +79,7 @@ public class SignUpListener implements ActionListener {
                 Home.getHome().getAccountTypeComboBox().removeItemAt(0);
             Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
             Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
+            Home.getHome().getTopToolBar().add(Home.getHome().getSignOutBtn());
 
             // data inserted successfully
             new ErrorMsgDisplay(String.format("%s Successfully Signed Up!!!", name), signUpDialog.getSignUpPanel());

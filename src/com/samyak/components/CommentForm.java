@@ -9,6 +9,7 @@ public class CommentForm {
     private JPanel commentsPane;
     private JPanel contentPane;
     private JTextPane commentTextPane;
+    private JList list1;
     private String videoId;
 
     public CommentForm(String videoId) {

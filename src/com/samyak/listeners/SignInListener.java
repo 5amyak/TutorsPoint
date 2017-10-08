@@ -5,6 +5,7 @@ import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.includes.PasswordAuthentication;
 import com.samyak.components.SignInDialog;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,6 +68,7 @@ public class SignInListener implements ActionListener {
                 }
                 Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
                 Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
+                Home.getHome().getTopToolBar().add(Home.getHome().getSignOutBtn());
             }
             else
                 throw new Exception("Email or Password is Incorrect.");

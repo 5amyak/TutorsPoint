@@ -61,6 +61,16 @@
             <constraints/>
             <properties/>
           </component>
+          <component id="92977" class="javax.swing.JButton" binding="settingsButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Settings"/>
+            </properties>
+          </component>
+          <component id="9f998" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="abdb5" class="javax.swing.JButton" binding="signInHomeBtn">
             <constraints/>
             <properties>
@@ -77,16 +87,6 @@
             <properties>
               <font/>
               <text value="Sign Up"/>
-            </properties>
-          </component>
-          <component id="45de7" class="javax.swing.JToolBar$Separator">
-            <constraints/>
-            <properties/>
-          </component>
-          <component id="92977" class="javax.swing.JButton" binding="settingsButton" default-binding="true">
-            <constraints/>
-            <properties>
-              <text value="Settings"/>
             </properties>
           </component>
         </children>
