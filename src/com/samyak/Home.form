@@ -71,6 +71,10 @@
             <constraints/>
             <properties/>
           </component>
+          <component id="67de1" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="abdb5" class="javax.swing.JButton" binding="signInHomeBtn">
             <constraints/>
             <properties>

@@ -9,10 +9,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TeacherSettingsBtnListener implements ActionListener {
+public class SettingsBtnListener implements ActionListener {
     private Home home;
 
-    public TeacherSettingsBtnListener(Home home) {
+    public SettingsBtnListener(Home home) {
         this.home = home;
     }
 
@@ -20,7 +20,7 @@ public class TeacherSettingsBtnListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JTabbedPane tabbedPane = home.getContentDisplayTabbedPane();
 
-        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getAccountTypeComboBox().getSelectedItem().toString().equals("Teacher")) {
+        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("")) {
             new ErrorMsgDisplay("Not Signed in. Sign in or Sign up as a Teacher.", (Component) e.getSource());
             return;
         }
@@ -34,7 +34,11 @@ public class TeacherSettingsBtnListener implements ActionListener {
         }
 
         // creating settings tab from utility function
-        JScrollPane scrollPane = home.getUtil().createTeacherSettingsTab();
+        JScrollPane scrollPane;
+        if (Home.getHome().getUserType().equals("teacher"))
+            scrollPane = home.getUtil().createTeacherSettingsTab();
+        else
+            scrollPane = home.getUtil().createStudentSettingsTab();
         tabbedPane.addTab("Settings", scrollPane);
         tabbedPane.setSelectedComponent(scrollPane);
         tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane));

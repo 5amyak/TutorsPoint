@@ -2,6 +2,7 @@ package com.samyak.includes;
 
 import com.samyak.Course;
 import com.samyak.Subtopic;
+import com.samyak.components.CommentListItem;
 import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.components.PlayButton;
 import com.samyak.listeners.*;
@@ -227,6 +228,41 @@ public class Utilities {
         return scrollPane;
     }
 
+    public JScrollPane createStudentSettingsTab() {
+        JPanel tabPanel = new JPanel();
+        // setName on scrollPane to uniquely identify the tab if already opened
+        // add tabPanel on scrollPane to allow scrolling
+        JScrollPane scrollPane = new JScrollPane(tabPanel);
+        scrollPane.setName("Settings");
+        tabPanel.setLayout(new GridBagLayout());
+
+        // info about position, padding, look of component
+        // adding buttons on panel
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(3, 5, 3, 5);
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        JButton manageSubscriptionsBtn = new JButton("Manage Subscriptions");
+//        createCourseBtn.addActionListener(new CreateCourseBtnListener());
+        tabPanel.add(manageSubscriptionsBtn, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        JButton watchListBtn = new JButton("Watch List");
+//        addSubtopicsBtn.addActionListener(new AddSubtopicBtnListener());
+        tabPanel.add(watchListBtn, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        JButton inProgressCoursesBtn = new JButton("In Progress Courses");
+        tabPanel.add(inProgressCoursesBtn, gbc);
+
+        return scrollPane;
+    }
+
     public void createNodes(DefaultMutableTreeNode top) {
         DefaultMutableTreeNode course;
         DefaultMutableTreeNode subtopic;
@@ -236,12 +272,12 @@ public class Utilities {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, teacher_id, name, avg_rating FROM courses");
+            PreparedStatement stmt = con.prepareStatement("SELECT course_id, teacher_id, name FROM courses");
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 int course_id = rs.getInt(1);
-                course = new DefaultMutableTreeNode(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4)));
+                course = new DefaultMutableTreeNode(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3)));
                 top.add(course);
                 stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
                 stmt.setInt(1, course_id);
@@ -258,5 +294,32 @@ public class Utilities {
         }
     }
 
-
+//    public void createCommentsTree(DefaultMutableTreeNode commentsTreeTop) {
+//
+//        // SQL to further create nodes of courses Tree
+//        try {
+//            Class.forName("com.mysql.jdbc.Driver");
+//            Connection con = DriverManager.getConnection(
+//                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+//            PreparedStatement stmt = con.prepareStatement("SELECT * FROM comments");
+//            ResultSet rs = stmt.executeQuery();
+//
+//            while (rs.next()) {
+//                int course_id = rs.getInt(1);
+//                course = new DefaultMutableTreeNode(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4)));
+//                top.add(course);
+//                stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
+//                stmt.setInt(1, course_id);
+//                ResultSet nrs = stmt.executeQuery();
+//                while (nrs.next()) {
+//                    subtopic = new DefaultMutableTreeNode(new Subtopic(nrs.getInt(1), nrs.getString(2), nrs.getString(3)));
+//                    course.add(subtopic);
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            new ErrorMsgDisplay(e.getMessage(), null);
+//        }
+//    }
 }

@@ -95,12 +95,12 @@ public class AddSubtopicDialog extends JDialog {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name, avg_rating FROM courses WHERE teacher_id = ?");
+            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name FROM courses WHERE teacher_id = ?");
             stmt.setInt(1, Home.getHome().getUserId());
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             while (rs.next()) {
-                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2), rs.getInt(3)));
+                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2)));
             }
             con.close();
 

@@ -55,12 +55,7 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children>
-              <component id="aae76" class="javax.swing.JList" binding="list1" default-binding="true">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
+            <children/>
           </scrollpane>
         </children>
       </grid>

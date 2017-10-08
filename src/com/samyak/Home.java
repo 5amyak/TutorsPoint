@@ -45,7 +45,7 @@ public class Home {
             }
         });
 
-        settingsButton.addActionListener(new TeacherSettingsBtnListener(this));
+        settingsButton.addActionListener(new SettingsBtnListener(this));
 
         searchButton.addActionListener(new SearchButtonListener(this));
     }
@@ -128,6 +128,10 @@ public class Home {
 
     public int getUserId() {
         return userId;
+    }
+
+    public void setAccountTypeComboBox(JComboBox accountTypeComboBox) {
+        this.accountTypeComboBox = accountTypeComboBox;
     }
 
     public void setUserName(String userName) {
