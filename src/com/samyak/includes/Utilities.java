@@ -1,15 +1,17 @@
 package com.samyak.includes;
 
 import com.samyak.Course;
+import com.samyak.Home;
 import com.samyak.Subtopic;
-import com.samyak.components.CommentListItem;
-import com.samyak.components.ErrorMsgDisplay;
-import com.samyak.components.PlayButton;
+import com.samyak.components.*;
 import com.samyak.listeners.*;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -199,13 +201,13 @@ public class Utilities {
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         JButton createCourseBtn = new JButton("Create Course");
-        createCourseBtn.addActionListener(new CreateCourseBtnListener());
+        createCourseBtn.addActionListener(new TeacherDialogBtnListener(new CreateCourseDialog()));
         tabPanel.add(createCourseBtn, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         JButton addSubtopicsBtn = new JButton("Add Subtopics");
-        addSubtopicsBtn.addActionListener(new AddSubtopicBtnListener());
+        addSubtopicsBtn.addActionListener(new TeacherDialogBtnListener(new AddSubtopicDialog()));
         tabPanel.add(addSubtopicsBtn, gbc);
 
         gbc.gridx = 0;
@@ -222,7 +224,7 @@ public class Utilities {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         JButton uploadVideoBtn = new JButton("Upload Video");
-        uploadVideoBtn.addActionListener(new UploadVideoTabBtnListener());
+        uploadVideoBtn.addActionListener(new TeacherDialogBtnListener(new UploadVideoDialog()));
         tabPanel.add(uploadVideoBtn, gbc);
 
         return scrollPane;
@@ -245,7 +247,7 @@ public class Utilities {
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         JButton manageSubscriptionsBtn = new JButton("Manage Subscriptions");
-//        createCourseBtn.addActionListener(new CreateCourseBtnListener());
+        manageSubscriptionsBtn.addActionListener(new StudentDialogBtnListener(new ManageSubscriptionsDialog()));
         tabPanel.add(manageSubscriptionsBtn, gbc);
 
         gbc.gridx = 1;
@@ -292,6 +294,50 @@ public class Utilities {
             e.printStackTrace();
             new ErrorMsgDisplay(e.getMessage(), null);
         }
+    }
+
+    public void createSubscriptionsPanel(JDialog dialog, JPanel subscriptionsPanel) {
+        subscriptionsPanel.removeAll();
+        subscriptionsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 5, 3, 5);
+        c.gridx = 0;
+        c.gridy = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "SELECT teachers.name, subscriptions.teacher_id\n" +
+                    "FROM subscriptions\n" +
+                    "INNER JOIN teachers ON teachers.teacher_id=subscriptions.teacher_id\n" +
+                    "WHERE subscriptions.student_id=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Home.getHome().getUserId());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                c.gridx = 0;
+                c.gridwidth = 2;
+                c.anchor = GridBagConstraints.WEST;
+                JLabel teacherName = new JLabel(rs.getString(1).toUpperCase());
+                subscriptionsPanel.add(teacherName, c);
+                c.gridx = 2;
+                c.gridwidth = 1;
+                c.anchor = GridBagConstraints.EAST;
+                JButton removeSubscriptionBtn = new JButton("Remove");
+                removeSubscriptionBtn.setName(Integer.toString(rs.getInt(2)));
+                removeSubscriptionBtn.addActionListener(new RemoveSubscriptionListener(dialog));
+                subscriptionsPanel.add(removeSubscriptionBtn, c);
+
+                c.gridy++;
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+
     }
 
 //    public void createCommentsTree(DefaultMutableTreeNode commentsTreeTop) {

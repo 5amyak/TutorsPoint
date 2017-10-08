@@ -21,7 +21,7 @@ public class SettingsBtnListener implements ActionListener {
         JTabbedPane tabbedPane = home.getContentDisplayTabbedPane();
 
         if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("")) {
-            new ErrorMsgDisplay("Not Signed in. Sign in or Sign up as a Teacher.", (Component) e.getSource());
+            new ErrorMsgDisplay("Not Signed in. Sign in or Sign up.", (Component) e.getSource());
             return;
         }
 

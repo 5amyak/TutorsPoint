@@ -1,5 +1,6 @@
 package com.samyak.listeners;
 
+import com.samyak.Home;
 import com.samyak.UploadThread;
 import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.components.UploadVideoDialog;
@@ -19,6 +20,11 @@ public class UploadVideoListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (Home.getHome().getUserId() == -1 || Home.getHome().getUserName().equals("") || !Home.getHome().getUserType().equals("teacher")) {
+            new ErrorMsgDisplay("Not Signed in. Sign in or Sign up as a Teacher.", (Component) e.getSource());
+            return;
+        }
+
         String videoName = dialog.getVideoNameField().getText().trim();
         if (videoName.equals("")) {
             new ErrorMsgDisplay("* marked fields are mandatory.", dialog.getContentPane());
