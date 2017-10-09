@@ -3,10 +3,12 @@ package com.samyak.components;
 import com.samyak.Home;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class RateCourseDialog extends JDialog {
     private int courseId;
@@ -18,6 +20,7 @@ public class RateCourseDialog extends JDialog {
     private JRadioButton radioThree;
     private JRadioButton radioFour;
     private JRadioButton radioFive;
+    private JButton removeRatingButton;
 
     public RateCourseDialog(int courseId) {
         this.courseId = courseId;
@@ -88,6 +91,27 @@ public class RateCourseDialog extends JDialog {
             radioFour.setSelected(true);
             radioFive.setSelected(true);
         });
+        removeRatingButton.addActionListener(e -> {
+            try {
+                // SQL to store data of new user
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                String sql = "DELETE FROM course_ratings WHERE course_id=? AND student_id=?";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, courseId);
+                stmt.setInt(2, Home.getHome().getUserId());
+                stmt.executeUpdate();
+
+                con.close();
+                new ErrorMsgDisplay("Successfully UnRated!!!", (Component) e.getSource());
+                updateRating();
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                new ErrorMsgDisplay(e1.getMessage(), (Component) e.getSource());
+            }
+        });
     }
 
     private void onOK() {
@@ -113,14 +137,42 @@ public class RateCourseDialog extends JDialog {
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
             String sql = "INSERT INTO course_ratings (`student_id`, `course_id`, `rating`) VALUES (?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, courseId);
-            stmt.setInt(2, Home.getHome().getUserId());
+            stmt.setInt(1, Home.getHome().getUserId());
+            stmt.setInt(2, courseId);
             stmt.setInt(3, rating);
             stmt.executeUpdate();
 
             con.close();
+            updateRating();
             new ErrorMsgDisplay("Successfully Rated!!!", null);
             buttonCancel.doClick();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+    }
+
+    private void updateRating() {
+        try {
+            float avg_rating;
+            // SQL to store data of new user
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "SELECT AVG(rating) FROM course_ratings WHERE course_id=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, courseId);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            avg_rating = rs.getFloat(1);
+
+            sql = "UPDATE courses SET avg_rating=? WHERE course_id=?";
+            stmt = con.prepareStatement(sql);
+            stmt.setFloat(1, avg_rating);
+            stmt.setInt(2, courseId);
+            stmt.executeUpdate();
+            con.close();
 
         } catch (Exception e) {
             e.printStackTrace();

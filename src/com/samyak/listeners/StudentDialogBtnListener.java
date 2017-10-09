@@ -1,10 +1,7 @@
 package com.samyak.listeners;
 
 import com.samyak.Home;
-import com.samyak.components.ErrorMsgDisplay;
-import com.samyak.components.InProgressCourseDialog;
-import com.samyak.components.ManageSubscriptionsDialog;
-import com.samyak.components.WatchListDialog;
+import com.samyak.components.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +30,8 @@ public class StudentDialogBtnListener implements ActionListener {
                 dialog = new WatchListDialog();
             else if (dialog instanceof InProgressCourseDialog)
                 dialog = new InProgressCourseDialog();
+            else if (dialog instanceof RateCourseDialog)
+                dialog = new RateCourseDialog(Integer.parseInt(((JButton) e.getSource()).getName()));
             dialog.pack();
             dialog.setLocationRelativeTo((Component) e.getSource());
             dialog.setVisible(true);

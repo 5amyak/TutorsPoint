@@ -153,7 +153,7 @@ public class Utilities {
             gbc.gridy = 2;
             gbc.gridwidth = 1;
             JButton rateCourseBtn = new JButton("Rate Course");
-            rateCourseBtn.addActionListener(new RateCourseBtnListener());
+            rateCourseBtn.addActionListener(new StudentDialogBtnListener(new RateCourseDialog(course.getCourseId())));
             rateCourseBtn.setName(Integer.toString(course.getCourseId()));
             tabPanel.add(rateCourseBtn, gbc);
 
