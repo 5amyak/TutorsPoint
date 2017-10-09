@@ -27,7 +27,7 @@ public class InProgressCourseBtnListener implements ActionListener {
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
             if (((JButton) e.getSource()).getText().equals("Continue Later")) {
-                String sql = "INSERT INTO `in-progress_courses`(`student_id`, `course_id`) VALUES (?, ?)";
+                String sql = "INSERT INTO `in_progress_courses`(`student_id`, `course_id`) VALUES (?, ?)";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, Home.getHome().getUserId());
                 stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
@@ -37,15 +37,10 @@ public class InProgressCourseBtnListener implements ActionListener {
                 new ErrorMsgDisplay("Successfully Added to In-Progress Courses!!!", (Component) e.getSource());
                 ((JButton) e.getSource()).setText("Remove from In-Progress Courses");
             } else {
-                String sql = "DELETE FROM `in-progress_courses` WHERE `student_id` = ? AND `course_id` = ?";
+                String sql = "DELETE FROM `in_progress_courses` WHERE `student_id` = ? AND `course_id` = ?";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, Home.getHome().getUserId());
                 stmt.setInt(2, Integer.parseInt(((JButton) e.getSource()).getName()));
-                stmt.executeUpdate();
-
-                sql = "UPDATE `videos` SET `likes`= `likes`-1 WHERE `video_id`=?";
-                stmt = con.prepareStatement(sql);
-                stmt.setInt(1, Integer.parseInt(((JButton) e.getSource()).getName()));
                 stmt.executeUpdate();
 
                 // data deleted successfully

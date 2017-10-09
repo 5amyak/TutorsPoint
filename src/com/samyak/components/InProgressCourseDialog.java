@@ -5,13 +5,13 @@ import com.samyak.Home;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ManageSubscriptionsDialog extends JDialog {
+public class InProgressCourseDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JPanel subscriptionsPanel;
+    private JPanel progressCoursePane;
 
-    public ManageSubscriptionsDialog() {
+    public InProgressCourseDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -54,16 +54,10 @@ public class ManageSubscriptionsDialog extends JDialog {
         dispose();
     }
 
+
     private void createUIComponents() {
-        subscriptionsPanel = new JPanel();
-        Home.getHome().getUtil().createListPanel(subscriptionsPanel, this);
-    }
+        progressCoursePane = new JPanel();
 
-    public JPanel getSubscriptionsPanel() {
-        return subscriptionsPanel;
-    }
-
-    public void setSubscriptionsPanel(JPanel subscriptionsPanel) {
-        this.subscriptionsPanel = subscriptionsPanel;
+        Home.getHome().getUtil().createListPanel(progressCoursePane, this);
     }
 }

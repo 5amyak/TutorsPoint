@@ -9,9 +9,6 @@ import com.samyak.listeners.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.ConnectException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -253,13 +250,14 @@ public class Utilities {
         gbc.gridx = 1;
         gbc.gridy = 0;
         JButton watchListBtn = new JButton("Watch List");
-//        addSubtopicsBtn.addActionListener(new AddSubtopicBtnListener());
+        watchListBtn.addActionListener(new StudentDialogBtnListener(new WatchListDialog()));
         tabPanel.add(watchListBtn, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         JButton inProgressCoursesBtn = new JButton("In Progress Courses");
+        inProgressCoursesBtn.addActionListener(new StudentDialogBtnListener(new InProgressCourseDialog()));
         tabPanel.add(inProgressCoursesBtn, gbc);
 
         return scrollPane;
@@ -296,9 +294,12 @@ public class Utilities {
         }
     }
 
-    public void createSubscriptionsPanel(JDialog dialog, JPanel subscriptionsPanel) {
-        subscriptionsPanel.removeAll();
-        subscriptionsPanel.setLayout(new GridBagLayout());
+    public void createListPanel(JPanel listPanel, JDialog dialog) {
+        listPanel.removeAll();
+        listPanel.revalidate();
+        listPanel.repaint();
+
+        listPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(3, 5, 3, 5);
         c.gridx = 0;
@@ -307,10 +308,31 @@ public class Utilities {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            String sql = "SELECT teachers.name, subscriptions.teacher_id\n" +
-                    "FROM subscriptions\n" +
-                    "INNER JOIN teachers ON teachers.teacher_id=subscriptions.teacher_id\n" +
-                    "WHERE subscriptions.student_id=?";
+            String sql = "";
+            if (dialog instanceof ManageSubscriptionsDialog)
+                sql = "SELECT teachers.name, subscriptions.teacher_id\n" +
+                        "FROM subscriptions\n" +
+                        "INNER JOIN teachers ON teachers.teacher_id=subscriptions.teacher_id\n" +
+                        "WHERE subscriptions.student_id=?";
+            else if (dialog instanceof WatchListDialog)
+                sql = "SELECT\n" +
+                        "videos.name,\n" +
+                        "watchlist.video_id,\n" +
+                        "subtopics.name,\n" +
+                        "courses.name\n" +
+                        "FROM\n" +
+                        "watchlist\n" +
+                        "INNER JOIN videos ON videos.video_id = watchlist.video_id\n" +
+                        "INNER JOIN subtopics ON subtopics.subtopic_id = videos.subtopic_id\n" +
+                        "INNER JOIN courses ON subtopics.course_id = courses.course_id\n" +
+                        "WHERE\n" +
+                        "watchlist.student_id = ?";
+            else if (dialog instanceof InProgressCourseDialog)
+                sql = "SELECT courses.name, in_progress_courses.course_id\n" +
+                        "FROM in_progress_courses\n" +
+                        "INNER JOIN courses ON in_progress_courses.course_id = courses.course_id\n" +
+                        "WHERE in_progress_courses.student_id = ?";
+
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, Home.getHome().getUserId());
             ResultSet rs = stmt.executeQuery();
@@ -319,15 +341,19 @@ public class Utilities {
                 c.gridx = 0;
                 c.gridwidth = 2;
                 c.anchor = GridBagConstraints.WEST;
-                JLabel teacherName = new JLabel(rs.getString(1).toUpperCase());
-                subscriptionsPanel.add(teacherName, c);
+                JLabel listName;
+                if (dialog instanceof WatchListDialog)
+                    listName = new JLabel(rs.getString(1).toUpperCase() + "   " + rs.getString(3).toUpperCase() + "   " + rs.getString(4).toUpperCase());
+                else
+                    listName = new JLabel(rs.getString(1).toUpperCase());
+                listPanel.add(listName, c);
                 c.gridx = 2;
                 c.gridwidth = 1;
                 c.anchor = GridBagConstraints.EAST;
-                JButton removeSubscriptionBtn = new JButton("Remove");
-                removeSubscriptionBtn.setName(Integer.toString(rs.getInt(2)));
-                removeSubscriptionBtn.addActionListener(new RemoveSubscriptionListener(dialog));
-                subscriptionsPanel.add(removeSubscriptionBtn, c);
+                JButton removeBtn = new JButton("Remove");
+                removeBtn.setName(Integer.toString(rs.getInt(2)));
+                removeBtn.addActionListener(new RemoveListener(listPanel, dialog));
+                listPanel.add(removeBtn, c);
 
                 c.gridy++;
             }

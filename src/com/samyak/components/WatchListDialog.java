@@ -5,13 +5,13 @@ import com.samyak.Home;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ManageSubscriptionsDialog extends JDialog {
+public class WatchListDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JPanel subscriptionsPanel;
+    private JPanel watchlistPane;
 
-    public ManageSubscriptionsDialog() {
+    public WatchListDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -55,15 +55,7 @@ public class ManageSubscriptionsDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        subscriptionsPanel = new JPanel();
-        Home.getHome().getUtil().createListPanel(subscriptionsPanel, this);
-    }
-
-    public JPanel getSubscriptionsPanel() {
-        return subscriptionsPanel;
-    }
-
-    public void setSubscriptionsPanel(JPanel subscriptionsPanel) {
-        this.subscriptionsPanel = subscriptionsPanel;
+        watchlistPane = new JPanel();
+        Home.getHome().getUtil().createListPanel(watchlistPane, this);
     }
 }
