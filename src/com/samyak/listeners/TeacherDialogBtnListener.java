@@ -1,10 +1,7 @@
 package com.samyak.listeners;
 
 import com.samyak.Home;
-import com.samyak.components.AddSubtopicDialog;
-import com.samyak.components.CreateCourseDialog;
-import com.samyak.components.ErrorMsgDisplay;
-import com.samyak.components.UploadVideoDialog;
+import com.samyak.components.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +29,8 @@ public class TeacherDialogBtnListener implements ActionListener {
                 dialog = new CreateCourseDialog();
             else if (dialog instanceof UploadVideoDialog)
                 dialog = new UploadVideoDialog();
+            else if (dialog instanceof ContentStatsDialog)
+                dialog = new ContentStatsDialog();
 
             dialog.pack();
             dialog.setLocationRelativeTo((Component) e.getSource());

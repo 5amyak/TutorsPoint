@@ -21,6 +21,10 @@ public class SignOutListener implements ActionListener {
         Home.getHome().getTopToolBar().add(new JToolBar.Separator());
         Home.getHome().getTopToolBar().add(Home.getHome().getSignUpHomeBtn());
 
+        Home.getHome().getContentDisplayTabbedPane().removeAll();
+        Home.getHome().getContentDisplayTabbedPane().revalidate();
+        Home.getHome().getContentDisplayTabbedPane().repaint();
+
         Home.getHome().setUserName("");
         Home.getHome().setUserId(-1);
         Home.getHome().setUserType("");

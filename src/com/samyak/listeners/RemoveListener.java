@@ -3,10 +3,7 @@ package com.samyak.listeners;
 import java.sql.Connection;
 
 import com.samyak.Home;
-import com.samyak.components.ErrorMsgDisplay;
-import com.samyak.components.InProgressCourseDialog;
-import com.samyak.components.ManageSubscriptionsDialog;
-import com.samyak.components.WatchListDialog;
+import com.samyak.components.*;
 
 import javax.swing.*;
 import java.awt.*;

@@ -210,16 +210,11 @@ public class Utilities {
         gbc.gridx = 0;
         gbc.gridy = 1;
         JButton getStatisticsBtn = new JButton("Get Statistics");
+        getStatisticsBtn.addActionListener(new TeacherDialogBtnListener(new ContentStatsDialog()));
         tabPanel.add(getStatisticsBtn, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        JButton manageContentBtn = new JButton("Manage Content");
-        tabPanel.add(manageContentBtn, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
         JButton uploadVideoBtn = new JButton("Upload Video");
         uploadVideoBtn.addActionListener(new TeacherDialogBtnListener(new UploadVideoDialog()));
         tabPanel.add(uploadVideoBtn, gbc);
@@ -354,6 +349,75 @@ public class Utilities {
                 removeBtn.setName(Integer.toString(rs.getInt(2)));
                 removeBtn.addActionListener(new RemoveListener(listPanel, dialog));
                 listPanel.add(removeBtn, c);
+
+                c.gridy++;
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+
+    }
+
+    public void createStatisticsPanel(JPanel statsPanel, JDialog dialog) {
+        statsPanel.removeAll();
+        statsPanel.revalidate();
+        statsPanel.repaint();
+
+        statsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 5, 3, 5);
+        c.gridx = 0;
+        c.gridy = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "SELECT\n " +
+                    "videos.name,\n" +
+                    "videos.likes,\n" +
+                    "videos.video_id,\n" +
+                    "subtopics.name,\n" +
+                    "courses.name\n" +
+                    "FROM videos\n" +
+                    "INNER JOIN subtopics ON subtopics.subtopic_id = videos.subtopic_id\n" +
+                    "INNER JOIN courses ON courses.course_id=subtopics.course_id\n" +
+                    "WHERE\n" +
+                    "courses.teacher_id = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Home.getHome().getUserId());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                c.gridx = 0;
+                JLabel courseName = new JLabel(rs.getString(5));
+                statsPanel.add(courseName, c);
+                c.gridx++;
+                JLabel subtopicName = new JLabel(rs.getString(4));
+                statsPanel.add(subtopicName, c);
+                c.gridx++;
+                JLabel videoName = new JLabel(rs.getString(1));
+                statsPanel.add(videoName, c);
+                c.gridx++;
+                JLabel videoLikes = new JLabel(Integer.toString(rs.getInt(2)));
+                statsPanel.add(videoLikes, c);
+                c.gridx++;
+
+                sql = "SELECT COUNT(comment_id) FROM comments WHERE video_id=?";
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, rs.getInt(3));
+                ResultSet nrs = stmt.executeQuery();
+                nrs.next();
+                JLabel videoComments = new JLabel(Integer.toString(nrs.getInt(1)));
+                statsPanel.add(videoComments, c);
+                c.gridx++;
+                JButton removeBtn = new JButton("Remove");
+                removeBtn.setName(Integer.toString(rs.getInt(3)));
+                removeBtn.addActionListener(new DeleteVideoListener(statsPanel, dialog));
+                statsPanel.add(removeBtn, c);
 
                 c.gridy++;
             }

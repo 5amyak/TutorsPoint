@@ -1,5 +1,7 @@
 package com.samyak.components;
 
+import com.samyak.Home;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -7,6 +9,7 @@ public class ContentStatsDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JPanel statsPanel;
 
     public ContentStatsDialog() {
         setContentPane(contentPane);
@@ -51,10 +54,8 @@ public class ContentStatsDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        ContentStatsDialog dialog = new ContentStatsDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
+    private void createUIComponents() {
+        statsPanel = new JPanel();
+        Home.getHome().getUtil().createStatisticsPanel(statsPanel, this);
     }
 }
