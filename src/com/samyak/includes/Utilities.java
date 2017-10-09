@@ -135,8 +135,9 @@ public class Utilities {
                     "INNER JOIN subtopics ON subtopics.subtopic_id = videos.subtopic_id\n" +
                     "INNER JOIN courses ON subtopics.course_id = courses.course_id\n" +
                     "INNER JOIN teachers ON teachers.teacher_id = courses.teacher_id\n" +
+                    "LEFT JOIN video_tags ON video_tags.video_id = videos.video_id\n" +
                     "WHERE\n" +
-                    "    videos.name LIKE '%" + searchText + "%' OR teachers.name LIKE '%" + searchText + "%' OR subtopics.name LIKE '%" + searchText + "%' OR courses.name LIKE '%" + searchText + "%'\n" +
+                    "    videos.name LIKE '%" + searchText + "%' OR teachers.name LIKE '%" + searchText + "%' OR subtopics.name LIKE '%" + searchText + "%' OR courses.name LIKE '%" + searchText + "%' OR video_tags.name LIKE '%" + searchText + "%'\n" +
                     "ORDER BY\n" +
                     "courses.avg_rating\n" +
                     "DESC";

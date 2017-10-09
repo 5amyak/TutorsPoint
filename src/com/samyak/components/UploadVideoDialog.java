@@ -1,10 +1,12 @@
 package com.samyak.components;
 
+import com.samyak.Course;
 import com.samyak.Home;
 import com.samyak.Subtopic;
 import com.samyak.listeners.UploadVideoListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +20,7 @@ public class UploadVideoDialog extends JDialog {
     private JButton buttonCancel;
     private JComboBox subtopicsComboBox;
     private JTextField videoNameField;
+    private JComboBox coursesComboBox;
     private int nextVideoId;
 
     public UploadVideoDialog() {
@@ -41,6 +44,32 @@ public class UploadVideoDialog extends JDialog {
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        coursesComboBox.addActionListener(e -> {
+
+            // SQL
+            try {
+                subtopicsComboBox.removeAllItems();
+                subtopicsComboBox.revalidate();
+                subtopicsComboBox.repaint();
+
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                PreparedStatement stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
+                stmt.setInt(1, ((Course) ((JComboBox) e.getSource()).getSelectedItem()).getCourseId());
+                ResultSet nrs = stmt.executeQuery();
+                while (nrs.next())
+                    subtopicsComboBox.addItem(new Subtopic(nrs.getInt(1), nrs.getString(2), nrs.getString(3)));
+                con.close();
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                new ErrorMsgDisplay(e1.getMessage(), (Component) e.getSource());
+            }
+        });
+
+        coursesComboBox.setSelectedIndex(0);
     }
 
     private void onCancel() {
@@ -49,29 +78,26 @@ public class UploadVideoDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        ArrayList<Subtopic> subtopics = new ArrayList<>();
+        ArrayList<Course> courses = new ArrayList<>();
 
         // SQL
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id FROM courses WHERE teacher_id = ?");
+            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name FROM courses WHERE teacher_id = ?");
             stmt.setInt(1, Home.getHome().getUserId());
             ResultSet rs = stmt.executeQuery();
             // if record found using email
             while (rs.next()) {
-                stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
-                stmt.setInt(1, rs.getInt(1));
-                ResultSet nrs = stmt.executeQuery();
-                while (nrs.next())
-                    subtopics.add(new Subtopic(nrs.getInt(1), nrs.getString(2), nrs.getString(3)));
+                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2)));
             }
             con.close();
 
-            subtopicsComboBox = new JComboBox(subtopics.toArray());
+            coursesComboBox = new JComboBox(courses.toArray());
         } catch (Exception e) {
             e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
         }
 
     }
