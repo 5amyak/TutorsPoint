@@ -22,7 +22,7 @@ public class SearchButtonListener implements ActionListener {
 
         // if already opened, switch to it and return
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            if (tabbedPane.getComponentAt(i).getName().equals(searchText)) {
+            if (tabbedPane.getComponentAt(i).getName().equalsIgnoreCase(searchText)) {
                 tabbedPane.setSelectedIndex(i);
                 return;
             }

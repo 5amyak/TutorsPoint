@@ -1,6 +1,5 @@
 package com.samyak.components;
 
-import com.samyak.listeners.CommentBtnListener;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
@@ -17,7 +16,6 @@ public class MediaPlayer {
     private JButton pauseButton;
     private JButton rewindButton;
     private JButton skipButton;
-    private JButton commentButton;
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
     public MediaPlayer(PlayButton playButton) {
@@ -101,7 +99,7 @@ public class MediaPlayer {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        mediaPlayerComponent.getMediaPlayer().playMedia(playButton.getClientVideoPath());
+        mediaPlayerComponent.getMediaPlayer().playMedia("http://localhost/" + playButton.getVideoPath());
     }
 
     private void closeWindow() {

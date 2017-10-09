@@ -26,12 +26,12 @@ public class UploadVideoListener implements ActionListener {
         }
 
         String videoName = dialog.getVideoNameField().getText().trim();
-        if (videoName.equals("")) {
-            new ErrorMsgDisplay("* marked fields are mandatory.", dialog.getContentPane());
-            return;
-        }
         if (dialog.getSubtopicsComboBox().getItemCount() == 0) {
             new ErrorMsgDisplay("Add subtopics to your courses before uploading videos.", dialog.getContentPane());
+            return;
+        }
+        if (videoName.equals("")) {
+            new ErrorMsgDisplay("* marked fields are mandatory.", dialog.getContentPane());
             return;
         }
 

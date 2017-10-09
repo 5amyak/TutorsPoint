@@ -9,6 +9,8 @@ import com.samyak.listeners.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -41,7 +43,7 @@ public class Utilities {
             c.gridy = 1;
             c.gridwidth = 1;
             JButton playBtn = playButtons.get(i);
-            playBtn.addActionListener(new PlayBtnListener());
+            playBtn.addActionListener(e -> new MediaPlayer((PlayButton) playBtn));
             videoPanel.add(playBtn, c);
             c.gridx = 1;
             c.gridy = 1;
@@ -145,12 +147,16 @@ public class Utilities {
             ResultSet rs = stmt.executeQuery();
 
             // creating play buttons for each video in a subtopic
+            boolean flag = false;
             while (rs.next()) {
                 playButtons.add(new PlayButton(rs.getInt(1), rs.getString(2), rs.getString(3)));
+                flag = true;
             }
-            con.close();
 
+            con.close();
             createVideoPanels(playButtons, tabPanel);
+            if (!flag)
+                new ErrorMsgDisplay("No Search Results to display.", null);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,8 +1,9 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="TutorsPoint:jar">
+  <artifact type="jar" name="TutorsPoint:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/TutorsPoint_jar</output-path>
     <root id="archive" name="TutorsPoint.jar">
       <element id="module-output" name="TutorsPoint" />
+      <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/mysql-connector-java-5.1.40-bin.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/vlcj-3.10.1/jna-4.1.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/vlcj-3.10.1/vlcj-3.10.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/vlcj-3.10.1/slf4j-api-1.7.10.jar" path-in-jar="/" />
@@ -12,7 +13,6 @@
       <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/vlcj-3.10.1/vlcj-3.10.1-javadoc.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/vlcj-3.10.1/vlcj-3.10.1-sources.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/vlcj-3.10.1/vlcj-3.10.1-test-sources.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="C:/Program Files/Java/jre1.8.0_144/lib/ext/mysql-connector-java-5.1.40-bin.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
