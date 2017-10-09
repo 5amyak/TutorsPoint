@@ -474,6 +474,11 @@ public class Utilities {
                 removeBtn.setName(Integer.toString(rs.getInt(3)));
                 removeBtn.addActionListener(new DeleteVideoListener(statsPanel, dialog));
                 statsPanel.add(removeBtn, c);
+                c.gridx++;
+                JButton addTagBtn = new JButton("Add Tag");
+                addTagBtn.setName(Integer.toString(rs.getInt(3)));
+                addTagBtn.addActionListener(new TeacherDialogBtnListener(new AddTagDialog(rs.getInt(3))));
+                statsPanel.add(addTagBtn, c);
 
                 c.gridy++;
             }

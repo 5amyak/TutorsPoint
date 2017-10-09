@@ -31,6 +31,8 @@ public class TeacherDialogBtnListener implements ActionListener {
                 dialog = new UploadVideoDialog();
             else if (dialog instanceof ContentStatsDialog)
                 dialog = new ContentStatsDialog();
+            else if (dialog instanceof AddTagDialog)
+                dialog = new AddTagDialog(Integer.parseInt(((JButton) e.getSource()).getName()));
 
             dialog.pack();
             dialog.setLocationRelativeTo((Component) e.getSource());
