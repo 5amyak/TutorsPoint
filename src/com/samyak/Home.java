@@ -47,7 +47,7 @@ public class Home {
 
         settingsButton.addActionListener(new SettingsBtnListener(this));
 
-        searchButton.addActionListener(new SearchButtonListener(this));
+        searchButton.addActionListener(new SearchButtonListener());
     }
 
     public static void main(String[] args) {

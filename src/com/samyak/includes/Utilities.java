@@ -110,6 +110,55 @@ public class Utilities {
         return scrollPane;
     }
 
+    public JScrollPane createSearchTab(String searchText) {
+        JPanel tabPanel = new JPanel();
+
+        // add tabPanel on scrollPane to allow scrolling
+        JScrollPane scrollPane = new JScrollPane(tabPanel);
+        scrollPane.setName(searchText);
+        tabPanel.setLayout(new GridBagLayout());
+
+        // all play buttons corresponding to the video tab
+        ArrayList<PlayButton> playButtons = new ArrayList<>();
+
+        // SQL to set info about video on its play button and like button
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "SELECT\n" +
+                    "    videos.video_id,\n" +
+                    "    videos.name,\n" +
+                    "    videos.path\n" +
+                    "FROM\n" +
+                    "    videos\n" +
+                    "INNER JOIN subtopics ON subtopics.subtopic_id = videos.subtopic_id\n" +
+                    "INNER JOIN courses ON subtopics.course_id = courses.course_id\n" +
+                    "INNER JOIN teachers ON teachers.teacher_id = courses.teacher_id\n" +
+                    "WHERE\n" +
+                    "    videos.name LIKE '%" + searchText + "%' OR teachers.name LIKE '%" + searchText + "%' OR subtopics.name LIKE '%" + searchText + "%' OR courses.name LIKE '%" + searchText + "%'\n" +
+                    "ORDER BY\n" +
+                    "courses.avg_rating\n" +
+                    "DESC";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            // creating play buttons for each video in a subtopic
+            while (rs.next()) {
+                playButtons.add(new PlayButton(rs.getInt(1), rs.getString(2), rs.getString(3)));
+            }
+            con.close();
+
+            createVideoPanels(playButtons, tabPanel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+
+        return scrollPane;
+    }
+
     public JScrollPane createCourseTab(Course course) {
         JPanel tabPanel = new JPanel();
         // setName on scrollPane to uniquely identify the tab if already opened
