@@ -7,6 +7,7 @@ import com.samyak.components.*;
 import com.samyak.listeners.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.sql.*;
@@ -558,25 +559,29 @@ public class Utilities {
             Connection con = getConnection();
             if (con == null)
                 return;
-            PreparedStatement stmt = con.prepareStatement("SELECT comment, timestamp, comment_id FROM comments WHERE video_id=?");
+            PreparedStatement stmt = con.prepareStatement("SELECT comment, timestamp, comment_id, user_id, user_type FROM comments WHERE video_id=?");
             stmt.setInt(1, Integer.parseInt(videoId));
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 c.gridx = 0;
-                JLabel comment = new JLabel(rs.getString(1).toUpperCase());
+                c.anchor = GridBagConstraints.FIRST_LINE_START;
+                JLabel name = new JLabel(getNameFromComment(rs.getInt(4), rs.getString(5)).toUpperCase());
+                commentsPanel.add(name, c);
+                c.gridy++;
+
+                JTextArea comment = new JTextArea(rs.getString(1) + "\n" + rs.getString(2));
+                comment.setEditable(false);
                 commentsPanel.add(comment, c);
                 c.gridx++;
-                c.anchor = GridBagConstraints.LINE_END;
-                JLabel timestamp = new JLabel(rs.getString(2));
-                commentsPanel.add(timestamp, c);
-                c.gridx++;
+                Border border = BorderFactory.createLineBorder(Color.BLACK);
+                comment.setBorder(BorderFactory.createCompoundBorder(border,
+                        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
                 JButton removeBtn = new JButton("Remove");
                 removeBtn.setName(Integer.toString(rs.getInt(3)));
                 removeBtn.addActionListener(new RemoveCommentListener(commentsPanel, videoId));
                 commentsPanel.add(removeBtn, c);
-                c.gridx++;
 
                 c.gridy++;
             }
@@ -585,5 +590,29 @@ public class Utilities {
             e.printStackTrace();
             new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());
         }
+    }
+
+    public String getNameFromComment(int user_id, String user_type) {
+        String name = "";
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "";
+            if (user_type.equals("student"))
+                sql = "SELECT name FROM students WHERE student_id = ?";
+            else
+                sql = "SELECT name FROM teachers WHERE teacher_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, user_id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            name = rs.getString(1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+        return name;
     }
 }

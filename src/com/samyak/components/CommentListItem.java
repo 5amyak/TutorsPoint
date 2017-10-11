@@ -19,6 +19,11 @@ public class CommentListItem {
         this.timestamp = timestamp;
     }
 
+    public CommentListItem(int user_id, String user_type) {
+        this.user_id = user_id;
+        this.user_type = user_type;
+    }
+
     public int getComment_id() {
         return comment_id;
     }
@@ -82,6 +87,6 @@ public class CommentListItem {
             e.printStackTrace();
             new ErrorMsgDisplay(e.getMessage(), null);
         }
-        return (name + "\n    " + getComment());
+        return name;
     }
 }
