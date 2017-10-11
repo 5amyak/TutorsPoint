@@ -4,11 +4,14 @@ import com.samyak.Course;
 import com.samyak.Home;
 import com.samyak.Subtopic;
 import com.samyak.components.ButtonTabComponent;
+import com.samyak.components.ErrorMsgDisplay;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 
 public class TreeNodeSelectListener implements TreeSelectionListener {
 
@@ -24,10 +27,18 @@ public class TreeNodeSelectListener implements TreeSelectionListener {
         // This method is useful only when the selection model allows a single selection.
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                 home.getCoursesTree().getLastSelectedPathComponent();
+        DefaultTreeModel model = (DefaultTreeModel) home.getCoursesTree().getModel();
 
         // Nothing is selected
         if (node == null)
             return;
+
+        // Node selected is root
+        if (node == model.getRoot()) {
+            node.removeAllChildren();
+            home.getUtil().createNodes(node);
+            model.reload(node);
+        }
 
         // if selected object is not of type subtopic then return
         Object nodeInfo = node.getUserObject();

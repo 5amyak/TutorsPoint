@@ -69,7 +69,8 @@ public class UploadVideoDialog extends JDialog {
             }
         });
 
-        coursesComboBox.setSelectedIndex(0);
+        if (coursesComboBox.getSelectedIndex() != -1)
+            coursesComboBox.setSelectedIndex(0);
     }
 
     private void onCancel() {
@@ -125,5 +126,9 @@ public class UploadVideoDialog extends JDialog {
 
     public void setNextVideoId(int nextVideoId) {
         this.nextVideoId = nextVideoId;
+    }
+
+    public JComboBox getCoursesComboBox() {
+        return coursesComboBox;
     }
 }

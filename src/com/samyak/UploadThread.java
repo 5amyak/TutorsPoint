@@ -49,6 +49,10 @@ public class UploadThread implements Runnable {
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             dos.writeInt(nextVideoId);
 
+            String fileExtension = file.getName().substring(file.getName().lastIndexOf("."), file.getName().length());
+            System.out.println(fileExtension);
+            dos.writeUTF(fileExtension);
+
             // uploading file and sending to server
             System.out.println("Uploading File: " + file.getName());
             FileInputStream fin = new FileInputStream(file);
@@ -56,7 +60,7 @@ public class UploadThread implements Runnable {
             do {
                 byte b[] = new byte[1024];
                 size = fin.read(b);
-                System.out.println("Read: " + size);
+//                System.out.println("Read: " + size);
                 dos.write(b);
             } while (size > 0);
             System.out.println("File Send from client.");

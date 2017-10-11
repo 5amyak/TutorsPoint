@@ -92,7 +92,7 @@ public class Utilities {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT video_id, name, path FROM videos WHERE subtopic_id=?");
+            PreparedStatement stmt = con.prepareStatement("SELECT video_id, name, path FROM videos WHERE subtopic_id=? AND path != ''");
             stmt.setInt(1, subtopic.getSubtopicId());
             ResultSet rs = stmt.executeQuery();
 
@@ -154,15 +154,17 @@ public class Utilities {
             }
 
             con.close();
-            createVideoPanels(playButtons, tabPanel);
-            if (!flag)
-                new ErrorMsgDisplay("No Search Results to display.", null);
+            if (!flag) {
+                throw new Exception("No Search Results to display.");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
             new ErrorMsgDisplay(e.getMessage(), null);
+            return null;
         }
 
+        createVideoPanels(playButtons, tabPanel);
         return scrollPane;
     }
 
@@ -491,32 +493,47 @@ public class Utilities {
 
     }
 
-//    public void createCommentsTree(DefaultMutableTreeNode commentsTreeTop) {
-//
-//        // SQL to further create nodes of courses Tree
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//            Connection con = DriverManager.getConnection(
-//                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-//            PreparedStatement stmt = con.prepareStatement("SELECT * FROM comments");
-//            ResultSet rs = stmt.executeQuery();
-//
-//            while (rs.next()) {
-//                int course_id = rs.getInt(1);
-//                course = new DefaultMutableTreeNode(new Course(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4)));
-//                top.add(course);
-//                stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
-//                stmt.setInt(1, course_id);
-//                ResultSet nrs = stmt.executeQuery();
-//                while (nrs.next()) {
-//                    subtopic = new DefaultMutableTreeNode(new Subtopic(nrs.getInt(1), nrs.getString(2), nrs.getString(3)));
-//                    course.add(subtopic);
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            new ErrorMsgDisplay(e.getMessage(), null);
-//        }
-//    }
+    public void createCommentsPanel(JPanel commentsPanel, String videoId) {
+        commentsPanel.removeAll();
+        commentsPanel.revalidate();
+        commentsPanel.repaint();
+
+        commentsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 5, 3, 5);
+        c.gridx = 0;
+        c.gridy = 0;
+        // SQL to further create nodes of courses Tree
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            PreparedStatement stmt = con.prepareStatement("SELECT comment, timestamp FROM comments WHERE video_id=?");
+            stmt.setInt(1, Integer.parseInt(videoId));
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                c.gridx = 0;
+                JLabel comment = new JLabel(rs.getString(1).toUpperCase());
+                commentsPanel.add(comment, c);
+                c.gridx++;
+                c.anchor = GridBagConstraints.LINE_END;
+                JLabel timestamp = new JLabel(rs.getString(2));
+                commentsPanel.add(timestamp, c);
+                c.gridx++;
+
+                JButton removeBtn = new JButton("Remove");
+//                removeBtn.setName(Integer.toString(rs.getInt(3)));
+//                removeBtn.addActionListener(new DeleteVideoListener(statsPanel, dialog));
+//                commentsPanel.add(removeBtn, c);
+                c.gridx++;
+
+                c.gridy++;
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), null);
+        }
+    }
 }

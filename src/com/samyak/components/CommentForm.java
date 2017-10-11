@@ -7,10 +7,9 @@ import javax.swing.*;
 
 public class CommentForm {
     private JButton commentButton;
-    private JPanel commentsPane;
+    private JPanel commentsPanel;
     private JPanel contentPane;
     private JTextPane commentTextPane;
-    private JList commentList;
     private String videoId;
 
     public CommentForm(String videoId) {
@@ -38,12 +37,12 @@ public class CommentForm {
         this.commentButton = commentButton;
     }
 
-    public JPanel getCommentsPane() {
-        return commentsPane;
+    public JPanel getCommentsPanel() {
+        return commentsPanel;
     }
 
-    public void setCommentsPane(JPanel commentsPane) {
-        this.commentsPane = commentsPane;
+    public void setCommentsPanel(JPanel commentsPanel) {
+        this.commentsPanel = commentsPanel;
     }
 
     public void setContentPane(JPanel contentPane) {
@@ -59,10 +58,8 @@ public class CommentForm {
     }
 
     private void createUIComponents() {
-        DefaultListModel<String> commentListModel = new DefaultListModel<>();
-//        commentListModel.add(new CommentListItem());
+        commentsPanel = new JPanel();
 
-        commentListModel.addElement("one");
-        commentList = new JList(commentListModel);
+        Home.getHome().getUtil().createCommentsPanel(commentsPanel, videoId);
     }
 }

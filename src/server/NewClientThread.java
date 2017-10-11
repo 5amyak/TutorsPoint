@@ -24,6 +24,8 @@ public class NewClientThread implements Runnable {
 
             DataInputStream dis = new DataInputStream(socket.getInputStream());
             int nextVideoId = dis.readInt();
+            String fileExtension = dis.readUTF();
+            System.out.println(fileExtension);
             System.out.println(nextVideoId);
 
 //            if (nextVideoId == -1) {
@@ -51,10 +53,23 @@ public class NewClientThread implements Runnable {
             System.out.println("Receiving from server.");
             dis = new DataInputStream(socket.getInputStream());
             // Reading file and copying it into new file on client side
-            String path = "server_tutorials\\";
+            String path = "server_tutorials/";
             path += new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-            path += ".mp4";
-            String fileName = "E:\\xampp\\htdocs\\";
+            path += fileExtension;
+
+            // SQL to update path for video on server
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            String sql = "UPDATE videos SET path=? WHERE video_id=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, path);
+            stmt.setInt(2, nextVideoId);
+            stmt.executeUpdate();
+
+            con.close();
+
+            String fileName = "E://xampp/htdocs/";
             fileName += path;
             File myfile = new File(fileName);
 
@@ -67,7 +82,7 @@ public class NewClientThread implements Runnable {
                 byte b[] = new byte[1024];
                 size = dis.read(b);
                 fout.write(b);
-                System.out.println("Received:" + size);
+//                System.out.println("Received:" + size);
             } while (size > 0);
 
             // data inserted successfully
@@ -75,22 +90,8 @@ public class NewClientThread implements Runnable {
 
             fout.close();
             dis.close();
-
-            // SQL to update path for video on server
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            String sql = "UPDATE videos SET path=? WHERE video_id=?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, path);
-            stmt.setInt(2, nextVideoId);
-            stmt.executeUpdate();
-
             System.out.println("Receive Thread ended.");
-            con.close();
-
             dos.close();
-            dis.close();
             socket.close();
             System.out.println("New Client Thread on Server ended");
 

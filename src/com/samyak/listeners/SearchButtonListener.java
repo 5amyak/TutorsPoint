@@ -31,6 +31,8 @@ public class SearchButtonListener implements ActionListener {
         // creating search tab from utility function
         JScrollPane scrollPane;
         scrollPane = Home.getHome().getUtil().createSearchTab(searchText);
+        if (scrollPane == null)
+            return;
         tabbedPane.addTab("Search", null, scrollPane, searchText);
         tabbedPane.setSelectedComponent(scrollPane);
         tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(scrollPane), new ButtonTabComponent(tabbedPane));

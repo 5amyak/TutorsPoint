@@ -45,6 +45,7 @@ public class AddCommentListener implements ActionListener {
             con.close();
 
             commentForm.getCommentTextPane().setText("");
+            Home.getHome().getUtil().createCommentsPanel(commentForm.getCommentsPanel(), commentForm.getVideoId());
         } catch (Exception e1) {
             e1.printStackTrace();
             new ErrorMsgDisplay(e1.getMessage(), (Component) e.getSource());
