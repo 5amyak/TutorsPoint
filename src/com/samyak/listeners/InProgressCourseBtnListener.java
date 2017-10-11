@@ -21,7 +21,7 @@ public class InProgressCourseBtnListener implements ActionListener {
             return;
         }
 
-        // SQL to store user_id and video_id of liked video
+        // SQL to store user_id and course_id in Database
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(

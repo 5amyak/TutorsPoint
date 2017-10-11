@@ -66,7 +66,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Select Subtopic"/>
+              <text value="Select Subtopic*"/>
             </properties>
           </component>
           <component id="f46ce" class="javax.swing.JComboBox" binding="subtopicsComboBox">
@@ -80,7 +80,7 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Video Name"/>
+              <text value="Video Name*"/>
             </properties>
           </component>
           <component id="9d48a" class="javax.swing.JTextField" binding="videoNameField">
@@ -96,7 +96,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Select Course"/>
+              <text value="Select Course*"/>
             </properties>
           </component>
           <component id="462a3" class="javax.swing.JComboBox" binding="coursesComboBox" custom-create="true">
