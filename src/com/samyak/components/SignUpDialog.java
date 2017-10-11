@@ -19,13 +19,18 @@ public class SignUpDialog extends JDialog{
     private String dbName;
 
     public SignUpDialog(String dbType) {
+        scrollPane = new JScrollPane(signUpPanel);
+        setContentPane(scrollPane);
+        setModal(true);
+        getRootPane().setDefaultButton(signUpButton);
+
+
         // Choosing Correct DB
         if (dbType.equals("Student"))
             dbName = "students";
         else
             dbName = "teachers";
 
-        scrollPane = new JScrollPane(signUpPanel);
         signUpButton.addActionListener(new SignUpListener(this));
         cancelButton.addActionListener(e -> onCancel());
 

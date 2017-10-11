@@ -8,12 +8,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// same listener used to display dialogs for students distinguished on the basis of dialog type
 public class StudentDialogBtnListener implements ActionListener {
 
     private JDialog dialog;
 
     public StudentDialogBtnListener(JDialog dialog) {
         this.dialog = dialog;
+        dialog.dispose();
     }
 
     @Override

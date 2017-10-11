@@ -9,12 +9,37 @@ import com.samyak.listeners.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class Utilities {
+    // returns connection to database
+    public Connection getConnection() {
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());
+        }
+        return con;
+    }
+
+    // sets fields of Home class and updates top tool bar when user signs in
+    public void signInUser(String dbName) {
+        if (dbName.equals("students")) {
+            Home.getHome().getAccountTypeComboBox().removeItem("Teacher");
+            Home.getHome().setUserType("student");
+        } else {
+            Home.getHome().getAccountTypeComboBox().removeItem("Student");
+            Home.getHome().setUserType("teacher");
+        }
+        Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
+        Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
+        Home.getHome().getTopToolBar().add(Home.getHome().getSignOutBtn());
+    }
 
     private void createVideoPanels(ArrayList<PlayButton> playButtons, JPanel tabPanel) {
         // creating video panel for each video in a subtopic
@@ -27,7 +52,7 @@ public class Utilities {
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-        for (int i = 0; i < playButtons.size(); i++) {
+        for (PlayButton playButton : playButtons) {
 
             JPanel videoPanel = new JPanel();
             GridBagConstraints c = new GridBagConstraints();
@@ -37,34 +62,33 @@ public class Utilities {
             c.gridy = 0;
             c.gridwidth = 2;
             c.insets = new Insets(5, 3, 5, 3);
-            JLabel videoNameLabel = new JLabel(playButtons.get(i).getVideoName());
+            JLabel videoNameLabel = new JLabel(playButton.getVideoName());
             videoPanel.add(videoNameLabel, c);
             c.gridx = 0;
             c.gridy = 1;
             c.gridwidth = 1;
-            JButton playBtn = playButtons.get(i);
-            playBtn.addActionListener(e -> new MediaPlayer((PlayButton) playBtn));
-            videoPanel.add(playBtn, c);
+            playButton.addActionListener(e -> new MediaPlayer((PlayButton) playButton));
+            videoPanel.add(playButton, c);
             c.gridx = 1;
             c.gridy = 1;
             c.gridwidth = 1;
             JButton likeBtn = new JButton("Like");
             likeBtn.addActionListener(new LikeBtnListener());
-            likeBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
+            likeBtn.setName(Integer.toString(playButton.getVideoId()));
             videoPanel.add(likeBtn, c);
             c.gridx = 0;
             c.gridy = 2;
             c.gridwidth = 2;
             JButton watchLaterBtn = new JButton("Add to WatchList");
             watchLaterBtn.addActionListener(new WatchLaterBtnListener());
-            watchLaterBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
+            watchLaterBtn.setName(Integer.toString(playButton.getVideoId()));
             videoPanel.add(watchLaterBtn, c);
             c.gridx = 0;
             c.gridy = 3;
             c.gridwidth = 2;
             JButton commentBtn = new JButton("Comment");
             commentBtn.addActionListener(new CommentBtnListener());
-            commentBtn.setName(Integer.toString(playButtons.get(i).getVideoId()));
+            commentBtn.setName(Integer.toString(playButton.getVideoId()));
             videoPanel.add(commentBtn, c);
 
             tabPanel.add(videoPanel, gbc);
@@ -168,6 +192,7 @@ public class Utilities {
         return scrollPane;
     }
 
+    // creates tab to display basic info about courses
     public JScrollPane createCourseTab(Course course) {
         JPanel tabPanel = new JPanel();
         // setName on scrollPane to uniquely identify the tab if already opened
@@ -177,9 +202,9 @@ public class Utilities {
 
         // SQL to set info about video on its play button and like button
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return scrollPane;
             PreparedStatement stmt = con.prepareStatement("SELECT name, email FROM teachers WHERE teacher_id=?");
             stmt.setInt(1, course.getTeacherId());
             ResultSet rs = stmt.executeQuery();
@@ -239,6 +264,7 @@ public class Utilities {
         return scrollPane;
     }
 
+    // create tab to display options for teacher settings
     public JScrollPane createTeacherSettingsTab() {
         JPanel tabPanel = new JPanel();
         // setName on scrollPane to uniquely identify the tab if already opened
@@ -280,6 +306,7 @@ public class Utilities {
         return scrollPane;
     }
 
+    // create tab to display options for student settings
     public JScrollPane createStudentSettingsTab() {
         JPanel tabPanel = new JPanel();
         // setName on scrollPane to uniquely identify the tab if already opened
@@ -316,15 +343,16 @@ public class Utilities {
         return scrollPane;
     }
 
+    // creates node of JTree used to display courses and subtopics
     public void createNodes(DefaultMutableTreeNode top) {
         DefaultMutableTreeNode course;
         DefaultMutableTreeNode subtopic;
 
         // SQL to further create nodes of courses Tree
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return;
             PreparedStatement stmt = con.prepareStatement("SELECT course_id, teacher_id, name FROM courses");
             ResultSet rs = stmt.executeQuery();
 
@@ -347,6 +375,7 @@ public class Utilities {
         }
     }
 
+    // to create lists for display from student or teacher settings
     public void createListPanel(JPanel listPanel, JDialog dialog) {
         listPanel.removeAll();
         listPanel.revalidate();
@@ -358,9 +387,9 @@ public class Utilities {
         c.gridx = 0;
         c.gridy = 0;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return;
             String sql = "";
             if (dialog instanceof ManageSubscriptionsDialog)
                 sql = "SELECT teachers.name, subscriptions.teacher_id\n" +
@@ -419,6 +448,27 @@ public class Utilities {
 
     }
 
+    public void createCoursesComboBox(JComboBox coursesComboBox) {
+        // SQL to create combo box for all courses by teacher
+        try {
+            Connection con = getConnection();
+            if (con == null)
+                return;
+            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name FROM courses WHERE teacher_id = ?");
+            stmt.setInt(1, Home.getHome().getUserId());
+            ResultSet rs = stmt.executeQuery();
+            // if record found using email
+            while (rs.next()) {
+                coursesComboBox.addItem(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2)));
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // created panel to display statistics of each video to the teacher
     public void createStatisticsPanel(JPanel statsPanel, JDialog dialog) {
         statsPanel.removeAll();
         statsPanel.revalidate();
@@ -430,9 +480,9 @@ public class Utilities {
         c.gridx = 0;
         c.gridy = 0;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return;
             String sql = "SELECT\n " +
                     "videos.name,\n" +
                     "videos.likes,\n" +
@@ -505,9 +555,9 @@ public class Utilities {
         c.gridy = 0;
         // SQL to further create nodes of courses Tree
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return;
             PreparedStatement stmt = con.prepareStatement("SELECT comment, timestamp FROM comments WHERE video_id=?");
             stmt.setInt(1, Integer.parseInt(videoId));
             ResultSet rs = stmt.executeQuery();

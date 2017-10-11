@@ -16,13 +16,19 @@ public class SignInDialog extends JDialog{
     private String dbName;
 
     public SignInDialog(String dbType) {
+        scrollPane = new JScrollPane(signInPanel);
+
+        setContentPane(scrollPane);
+        setModal(true);
+        getRootPane().setDefaultButton(signInButton);
+
+
         // Choosing Correct DB
         if (dbType.equals("Student"))
             dbName = "students";
         else
             dbName = "teachers";
 
-        scrollPane = new JScrollPane(signInPanel);
         signInButton.addActionListener(new SignInListener(this));
         cancelButton.addActionListener(e -> onCancel());
 

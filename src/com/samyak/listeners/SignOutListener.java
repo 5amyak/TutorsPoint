@@ -11,10 +11,12 @@ public class SignOutListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (Home.getHome().getUserType().equals("student")) {
             Home.getHome().getAccountTypeComboBox().addItem("Teacher");
-        } else {
+        } else if (Home.getHome().getUserType().equals("teacher")) {
             Home.getHome().getAccountTypeComboBox().addItem("Student");
-        }
+        } else
+            return;
 
+        // removes added elements and restores top tool bar to original form
         Home.getHome().getTopToolBar().remove(Home.getHome().getSignOutBtn());
 
         Home.getHome().getTopToolBar().add(Home.getHome().getSignInHomeBtn());

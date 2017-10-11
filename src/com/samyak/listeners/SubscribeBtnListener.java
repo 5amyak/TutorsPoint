@@ -21,7 +21,7 @@ public class SubscribeBtnListener implements ActionListener {
             return;
         }
 
-        // SQL to store user_id and video_id of liked video
+        // SQL to store user_id and teacher_id of subscribed teacher
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");

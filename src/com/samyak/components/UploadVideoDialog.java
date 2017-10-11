@@ -9,10 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 public class UploadVideoDialog extends JDialog {
     private JPanel contentPane;
@@ -21,10 +19,8 @@ public class UploadVideoDialog extends JDialog {
     private JComboBox subtopicsComboBox;
     private JTextField videoNameField;
     private JComboBox coursesComboBox;
-    private int nextVideoId;
 
     public UploadVideoDialog() {
-        this.nextVideoId = -1;
 
         setContentPane(contentPane);
         setModal(true);
@@ -53,9 +49,9 @@ public class UploadVideoDialog extends JDialog {
                 subtopicsComboBox.revalidate();
                 subtopicsComboBox.repaint();
 
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                Connection con = Home.getHome().getUtil().getConnection();
+                if (con == null)
+                    return;
                 PreparedStatement stmt = con.prepareStatement("SELECT subtopic_id, name, description FROM subtopics WHERE course_id = ?");
                 stmt.setInt(1, ((Course) ((JComboBox) e.getSource()).getSelectedItem()).getCourseId());
                 ResultSet nrs = stmt.executeQuery();
@@ -79,27 +75,8 @@ public class UploadVideoDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        ArrayList<Course> courses = new ArrayList<>();
-
-        // SQL
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name FROM courses WHERE teacher_id = ?");
-            stmt.setInt(1, Home.getHome().getUserId());
-            ResultSet rs = stmt.executeQuery();
-            // if record found using email
-            while (rs.next()) {
-                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2)));
-            }
-            con.close();
-
-            coursesComboBox = new JComboBox(courses.toArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-            new ErrorMsgDisplay(e.getMessage(), null);
-        }
+        coursesComboBox = new JComboBox();
+        Home.getHome().getUtil().createCoursesComboBox(coursesComboBox);
 
     }
 
@@ -118,14 +95,6 @@ public class UploadVideoDialog extends JDialog {
 
     public JButton getButtonUploadVideo() {
         return buttonUploadVideo;
-    }
-
-    public int getNextVideoId() {
-        return nextVideoId;
-    }
-
-    public void setNextVideoId(int nextVideoId) {
-        this.nextVideoId = nextVideoId;
     }
 
     public JComboBox getCoursesComboBox() {

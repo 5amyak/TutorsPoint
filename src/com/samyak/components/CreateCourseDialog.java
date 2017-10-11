@@ -7,7 +7,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 public class CreateCourseDialog extends JDialog {
@@ -45,9 +44,9 @@ public class CreateCourseDialog extends JDialog {
                 throw new Exception("* marked fields are mandatory.");
 
             // SQL to create a new course
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "INSERT INTO courses (`teacher_id`, `name`) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, Home.getHome().getUserId());

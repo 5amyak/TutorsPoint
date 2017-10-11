@@ -27,13 +27,17 @@ public class Home {
     private int userId;
     private static Home home;
 
+    // other objects cannot create the instance of this class
+    // only one instance created through main and accessible to all classes through static method getHome()
+    // private constructor
     private Home() {
         this.userId = -1;
         this.userName = "";
         this.home = this;
 
-        signInHomeBtn.addActionListener(new SignInHomeBtnListener(this));
-        signUpHomeBtn.addActionListener(new SignUpHomeBtnListener(this));
+        // add listeners on buttons to display corresponding dialog to allow signIn\signUp
+        signInHomeBtn.addActionListener(new SignInUpHomeBtnListener());
+        signUpHomeBtn.addActionListener(new SignInUpHomeBtnListener());
 
         // Listen for when the selection changes in coursesTree.
         coursesTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -45,12 +49,13 @@ public class Home {
             }
         });
 
+        // add listeners to allow features of corresponding buttons
         settingsButton.addActionListener(new SettingsBtnListener(this));
-
         searchButton.addActionListener(new SearchButtonListener());
     }
 
     public static void main(String[] args) {
+        // creating frame from Home class, its only instance in JVM
         JFrame frame = new JFrame("Home");
         frame.setContentPane(new Home().homePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,10 +75,12 @@ public class Home {
         util.createNodes(coursesTreeTop);
         coursesTree = new JTree(coursesTreeTop);
 
+        // creating signOut button to be displayed when a student or teacher signs in
         signOutBtn = new JButton("Sign Out");
         signOutBtn.addActionListener(new SignOutListener());
     }
 
+    // getters
     public JPanel getHomePanel() {
         return homePanel;
     }

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("ALL")
 public class NewClientThread implements Runnable {
     Socket socket;
 
@@ -82,7 +83,7 @@ public class NewClientThread implements Runnable {
                 byte b[] = new byte[1024];
                 size = dis.read(b);
                 fout.write(b);
-//                System.out.println("Received:" + size);
+                System.out.println("Received:" + size);
             } while (size > 0);
 
             // data inserted successfully

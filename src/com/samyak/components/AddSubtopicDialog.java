@@ -10,16 +10,13 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 
 public class AddSubtopicDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonAddSubtopic;
     private JButton buttonCancel;
-    private JComboBox courseComboBox;
+    private JComboBox coursesComboBox;
     private JTextField nameField;
     private JTextArea descriptionTextArea;
 
@@ -55,18 +52,18 @@ public class AddSubtopicDialog extends JDialog {
             if (subtopicName.equals("") || subtopicDescription.equals(""))
                 throw new Exception("* marked fields are mandatory.");
             // SQL
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "INSERT INTO subtopics (`course_id`, `name`, `description`) VALUES (?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, ((Course)courseComboBox.getSelectedItem()).getCourseId());
+            stmt.setInt(1, ((Course) coursesComboBox.getSelectedItem()).getCourseId());
             stmt.setString(2, subtopicName);
             stmt.setString(3, subtopicDescription);
             stmt.executeUpdate();
 
             // data inserted successfully
-            new ErrorMsgDisplay(String.format("Subtopic %s Added Successfully to %s!!!", nameField.getText(), courseComboBox.getSelectedItem().toString()), this.contentPane);
+            new ErrorMsgDisplay(String.format("Subtopic %s Added Successfully to %s!!!", nameField.getText(), coursesComboBox.getSelectedItem().toString()), this.contentPane);
             con.close();
             this.onCancel();
 
@@ -88,28 +85,8 @@ public class AddSubtopicDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        ArrayList<Course> courses = new ArrayList<>();
-
-        // SQL
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
-            PreparedStatement stmt = con.prepareStatement("SELECT course_id, name FROM courses WHERE teacher_id = ?");
-            stmt.setInt(1, Home.getHome().getUserId());
-            ResultSet rs = stmt.executeQuery();
-            // if record found using email
-            while (rs.next()) {
-                courses.add(new Course(rs.getInt(1), Home.getHome().getUserId(), rs.getString(2)));
-            }
-            con.close();
-
-            courseComboBox = new JComboBox(courses.toArray());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        coursesComboBox = new JComboBox();
+        Home.getHome().getUtil().createCoursesComboBox(coursesComboBox);
     }
 
 }

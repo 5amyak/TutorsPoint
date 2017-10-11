@@ -7,10 +7,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class UploadThread implements Runnable {
 
@@ -60,7 +57,7 @@ public class UploadThread implements Runnable {
             do {
                 byte b[] = new byte[1024];
                 size = fin.read(b);
-//                System.out.println("Read: " + size);
+                System.out.println("Read: " + size);
                 dos.write(b);
             } while (size > 0);
             System.out.println("File Send from client.");
@@ -72,6 +69,16 @@ public class UploadThread implements Runnable {
             new ErrorMsgDisplay(String.format("%s uploaded successfully", file.getName()), Home.getHome().getHomePanel());
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                String sql = "DELETE FROM videos WHERE path=''";
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.executeUpdate();
+                con.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());
         }
 

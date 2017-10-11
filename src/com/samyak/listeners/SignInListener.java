@@ -5,14 +5,13 @@ import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.includes.PasswordAuthentication;
 import com.samyak.components.SignInDialog;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class SignInListener implements ActionListener {
-     private SignInDialog signInDialog;
+    private SignInDialog signInDialog;
 
     public SignInListener(SignInDialog signInDialog) {
         this.signInDialog = signInDialog;
@@ -39,14 +38,15 @@ public class SignInListener implements ActionListener {
                 throw new Exception("Password should be at least one capital letter, one small letter, one number and 8 character length.");
 
             // SQL to check entered values with database
+            // checking database to use
             String idType;
             if (dbName.equals("students"))
                 idType = "student_id";
             else
                 idType = "teacher_id";
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             PreparedStatement stmt = con.prepareStatement(String.format("SELECT %s, name, password FROM %s WHERE email = ?", idType, dbName));
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
@@ -59,16 +59,8 @@ public class SignInListener implements ActionListener {
                 Home.getHome().setUserId(rs.getInt(1));
                 Home.getHome().setUserName(rs.getString(2));
 
-                if (dbName.equals("students")) {
-                    Home.getHome().getAccountTypeComboBox().removeItem("Teacher");
-                    Home.getHome().setUserType("student");
-                } else {
-                    Home.getHome().getAccountTypeComboBox().removeItem("Student");
-                    Home.getHome().setUserType("teacher");
-                }
-                Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
-                Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
-                Home.getHome().getTopToolBar().add(Home.getHome().getSignOutBtn());
+                // Set value to complete signIn of user
+                Home.getHome().getUtil().signInUser(dbName);
             }
             else
                 throw new Exception("Email or Password is Incorrect.");

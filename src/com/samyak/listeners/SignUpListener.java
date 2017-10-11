@@ -5,7 +5,6 @@ import com.samyak.components.ErrorMsgDisplay;
 import com.samyak.includes.PasswordAuthentication;
 import com.samyak.components.SignUpDialog;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -50,9 +49,9 @@ public class SignUpListener implements ActionListener {
             passwd = authentication.hash(passwd.toCharArray());
 
             // SQL to store data of new user
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint","root","");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "INSERT INTO " + dbName + " (`name`, `email`, `gender`, `password`) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, name);
@@ -73,18 +72,10 @@ public class SignUpListener implements ActionListener {
             Home.getHome().setUserId(rs.getInt(1));
             Home.getHome().setUserName(name);
 
-            if (dbName.equals("students")) {
-                Home.getHome().getAccountTypeComboBox().removeItem("Teacher");
-                Home.getHome().setUserType("student");
-            } else {
-                Home.getHome().getAccountTypeComboBox().removeItem("Student");
-                Home.getHome().setUserType("teacher");
-            }
-            Home.getHome().getTopToolBar().remove(Home.getHome().getSignInHomeBtn());
-            Home.getHome().getTopToolBar().remove(Home.getHome().getSignUpHomeBtn());
-            Home.getHome().getTopToolBar().add(Home.getHome().getSignOutBtn());
+            // Set value to complete signIn of user
+            Home.getHome().getUtil().signInUser(dbName);
 
-            // data inserted successfully
+            // data inserted successfully. No error
             new ErrorMsgDisplay(String.format("%s Successfully Signed Up!!!", name), signUpDialog.getSignUpPanel());
             con.close();
             signUpDialog.onCancel();

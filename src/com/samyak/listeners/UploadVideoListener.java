@@ -55,10 +55,11 @@ public class UploadVideoListener implements ActionListener {
                 return;
             }
 
-            //This is where a real application would open the file.
+            // This is where a real application would open the file.
             Thread uploadThread = new Thread(new UploadThread(file, dialog));
             uploadThread.start();
 
+            new ErrorMsgDisplay("Please wait while video is uploaded.", (Component) e.getSource());
             dialog.dispose();
         }
     }

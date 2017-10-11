@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
+// listens whenever node in tree selected
 public class TreeNodeSelectListener implements TreeSelectionListener {
 
     Home home;
