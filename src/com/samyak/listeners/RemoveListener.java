@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+// remove item from the list
 public class RemoveListener implements ActionListener {
     private JPanel listPanel;
     private JDialog dialog;
@@ -19,6 +20,7 @@ public class RemoveListener implements ActionListener {
     public RemoveListener(JPanel listPanel, JDialog dialog) {
         this.listPanel = listPanel;
         this.dialog = dialog;
+        this.dialog.dispose();
     }
 
     @Override

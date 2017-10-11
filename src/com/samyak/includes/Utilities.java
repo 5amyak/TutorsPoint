@@ -558,7 +558,7 @@ public class Utilities {
             Connection con = getConnection();
             if (con == null)
                 return;
-            PreparedStatement stmt = con.prepareStatement("SELECT comment, timestamp FROM comments WHERE video_id=?");
+            PreparedStatement stmt = con.prepareStatement("SELECT comment, timestamp, comment_id FROM comments WHERE video_id=?");
             stmt.setInt(1, Integer.parseInt(videoId));
             ResultSet rs = stmt.executeQuery();
 
@@ -573,9 +573,9 @@ public class Utilities {
                 c.gridx++;
 
                 JButton removeBtn = new JButton("Remove");
-//                removeBtn.setName(Integer.toString(rs.getInt(3)));
-//                removeBtn.addActionListener(new DeleteVideoListener(statsPanel, dialog));
-//                commentsPanel.add(removeBtn, c);
+                removeBtn.setName(Integer.toString(rs.getInt(3)));
+                removeBtn.addActionListener(new RemoveCommentListener(commentsPanel, videoId));
+                commentsPanel.add(removeBtn, c);
                 c.gridx++;
 
                 c.gridy++;
@@ -583,7 +583,7 @@ public class Utilities {
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
-            new ErrorMsgDisplay(e.getMessage(), null);
+            new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());
         }
     }
 }
