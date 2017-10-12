@@ -49,9 +49,9 @@ public class MediaPlayer {
                     case KeyEvent.VK_LEFT:
                         rewindButton.doClick();
                         break;
-                    case KeyEvent.VK_RIGHT :
-                        skipButton.doClick();
-                        break;
+//                    case KeyEvent.VK_RIGHT :
+//                        skipButton.doClick();
+//                        break;
                 }
                 mediaPlayerComponent.getVideoSurface().requestFocusInWindow();
             }
@@ -65,14 +65,14 @@ public class MediaPlayer {
         rewindButton = new JButton("Rewind");
         rewindButton.setFocusable(false);
         controlsPane.add(rewindButton);
-        skipButton = new JButton("Skip");
-        skipButton.setFocusable(false);
-        controlsPane.add(skipButton);
+//        skipButton = new JButton("Skip");
+//        skipButton.setFocusable(false);
+//        controlsPane.add(skipButton);
         contentPane.add(controlsPane, BorderLayout.SOUTH);
         // implementing listeners on buttons
         pauseButton.addActionListener(e -> mediaPlayerComponent.getMediaPlayer().pause());
         rewindButton.addActionListener(e -> mediaPlayerComponent.getMediaPlayer().skip(-10000));
-        skipButton.addActionListener(e -> mediaPlayerComponent.getMediaPlayer().skip(10000));
+//        skipButton.addActionListener(e -> mediaPlayerComponent.getMediaPlayer().skip(10000));
 
         // event handling on media player
         mediaPlayerComponent.getMediaPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {

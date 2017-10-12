@@ -20,7 +20,6 @@ public class RemoveListener implements ActionListener {
     public RemoveListener(JPanel listPanel, JDialog dialog) {
         this.listPanel = listPanel;
         this.dialog = dialog;
-        this.dialog.dispose();
     }
 
     @Override
