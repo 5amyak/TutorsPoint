@@ -25,9 +25,9 @@ public class UploadThread implements Runnable {
             Socket socket = new Socket("localhost", 5000);
 
             // SQL to get video_id of next entry
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'videos'";
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -70,8 +70,9 @@ public class UploadThread implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                Connection con = Home.getHome().getUtil().getConnection();
+                if (con == null)
+                    return;
                 String sql = "DELETE FROM videos WHERE path=''";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.executeUpdate();

@@ -82,9 +82,9 @@ public class RateCourseDialog extends JDialog {
         removeRatingButton.addActionListener(e -> {
             try {
                 // SQL to store data of new user
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                Connection con = Home.getHome().getUtil().getConnection();
+                if (con == null)
+                    return;
                 String sql = "DELETE FROM course_ratings WHERE course_id=? AND student_id=?";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, courseId);
@@ -120,9 +120,9 @@ public class RateCourseDialog extends JDialog {
                 throw new Exception("Select Rating First!!!");
 
             // SQL to store data of new user
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "INSERT INTO course_ratings (`student_id`, `course_id`, `rating`) VALUES (?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, Home.getHome().getUserId());
@@ -145,9 +145,9 @@ public class RateCourseDialog extends JDialog {
         try {
             float avg_rating;
             // SQL to store data of new user
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "SELECT AVG(rating) FROM course_ratings WHERE course_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, courseId);

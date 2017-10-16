@@ -23,9 +23,9 @@ public class InProgressCourseBtnListener implements ActionListener {
 
         // SQL to store user_id and course_id in Database
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             if (((JButton) e.getSource()).getText().equals("Continue Later")) {
                 String sql = "INSERT INTO `in_progress_courses`(`student_id`, `course_id`) VALUES (?, ?)";
                 PreparedStatement stmt = con.prepareStatement(sql);

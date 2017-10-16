@@ -24,9 +24,9 @@ public class DeleteVideoListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
 
             // consecutive SQL queries to remove all data regarding video from database
             String sql = "DELETE FROM videos WHERE video_id = ?;";

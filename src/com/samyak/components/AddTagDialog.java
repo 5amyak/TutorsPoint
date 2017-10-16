@@ -59,9 +59,9 @@ public class AddTagDialog extends JDialog {
                 throw new Exception("* marked fields are mandatory.");
 
             // SQL to create a new tag
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "INSERT INTO video_tags(`video_id`, `name`) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, videoId);

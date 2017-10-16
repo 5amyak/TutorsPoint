@@ -29,9 +29,9 @@ public class AddCommentListener implements ActionListener {
                 throw new Exception("SignIn/Up to comment.");
 
             // SQL to store comment of new user in database
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             String sql = "INSERT INTO `comments` (`parent_id`, `video_id`, `comment`, `user_id`, `user_type`) VALUES (-1, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, Integer.parseInt(commentForm.getVideoId()));

@@ -24,9 +24,9 @@ public class SubscribeBtnListener implements ActionListener {
         // SQL to store user_id and teacher_id of subscribed teacher
         Connection con = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             if (((JButton) e.getSource()).getText().equals("Subscribe")) {
                 String sql = "INSERT INTO `subscriptions`(`student_id`, `teacher_id`) VALUES (?, ?)";
                 PreparedStatement stmt = con.prepareStatement(sql);

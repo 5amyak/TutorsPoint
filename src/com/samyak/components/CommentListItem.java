@@ -1,5 +1,7 @@
 package com.samyak.components;
 
+import com.samyak.Home;
+
 import java.sql.*;
 
 public class CommentListItem {
@@ -68,9 +70,9 @@ public class CommentListItem {
     public String toString() {
         String name = "";
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return name;
             String sql = "";
             if (user_type.equals("student"))
                 sql = "SELECT name FROM students WHERE student_id = ?";

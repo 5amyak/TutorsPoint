@@ -23,9 +23,9 @@ public class WatchLaterBtnListener implements ActionListener {
 
         // SQL to store user_id and video_id of liked video
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return;
             if (((JButton) e.getSource()).getText().equals("Add to WatchList")) {
                 String sql = "INSERT INTO `watchlist`(`student_id`, `video_id`) VALUES (?, ?)";
                 PreparedStatement stmt = con.prepareStatement(sql);

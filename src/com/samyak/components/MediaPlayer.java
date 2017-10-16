@@ -99,7 +99,7 @@ public class MediaPlayer {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        mediaPlayerComponent.getMediaPlayer().playMedia("http://localhost/" + playButton.getVideoPath());
+        mediaPlayerComponent.getMediaPlayer().playMedia("http://192.168.43.79/" + playButton.getVideoPath());
     }
 
     private void closeWindow() {

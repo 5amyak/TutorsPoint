@@ -20,7 +20,7 @@ public class Utilities {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+                    "jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12199658?autoReconnect=true&useSSL=false", "sql12199658", "ZF3ESrPUPW");
         } catch (Exception e) {
             e.printStackTrace();
             new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());
@@ -114,9 +114,9 @@ public class Utilities {
 
         // SQL to set info about video on its play button and like button
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return scrollPane;
             PreparedStatement stmt = con.prepareStatement("SELECT video_id, name, path FROM videos WHERE subtopic_id=? AND path != ''");
             stmt.setInt(1, subtopic.getSubtopicId());
             ResultSet rs = stmt.executeQuery();
@@ -150,9 +150,9 @@ public class Utilities {
 
         // SQL to set info about video on its play button and like button
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = Home.getHome().getUtil().getConnection();
+            if (con == null)
+                return null;
             String sql = "SELECT\n" +
                     "    videos.video_id,\n" +
                     "    videos.name,\n" +
@@ -595,9 +595,9 @@ public class Utilities {
     public String getNameFromComment(int user_id, String user_type) {
         String name = "";
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tutorspoint", "root", "");
+            Connection con = getConnection();
+            if (con == null)
+                return name;
             String sql = "";
             if (user_type.equals("student"))
                 sql = "SELECT name FROM students WHERE student_id = ?";
