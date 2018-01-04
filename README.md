@@ -5,7 +5,8 @@ Where tutors would create courses and upload videos and students would be able t
 
 ## Getting Started
 
-Check the UML Class diagram present inside _UML Diagrams_ folder to better understand the project flow.
+_TutorsPoint.jpeg_ in main repo contains image of Class diagram of overall project.
+Check the detailed UML diagram of each component present inside _UML Diagrams_ folder to better understand the project flow.
 
 Before trying to run the project create a database for the project by importing __TutorsPoint.sql__ file.
 
@@ -20,7 +21,8 @@ I used XAMPP server for development purpose to store videos.
     * vlcj-3.10.1
     * mysql-connector
 2. Install VLC as vlcj uses its System libraries.
-3. Add __slf4j-nop-_version_.jar__ to avoid _Failed to load class org.slf4j.impl.StaticLoggerBinder_ error.
+3. Include all libraries presesnt in vlcj folder, all jars are dependencies of main vlcj jar. 
+4. Add __slf4j-nop-_version_.jar__ to dependencies of vlcj to avoid _Failed to load class org.slf4j.impl.StaticLoggerBinder_ error.
 
 ## Main Features
 
