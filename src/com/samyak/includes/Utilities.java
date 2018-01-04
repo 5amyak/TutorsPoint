@@ -10,17 +10,28 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.net.Authenticator;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class Utilities {
+    public void setProxy() {
+        // HTTP/HTTPS Proxy
+        System.setProperty("http.proxyHost", "172.31.100.29");
+        System.setProperty("http.proxyPort", "3128");
+        System.setProperty("https.proxyHost", "172.31.100.29");
+        System.setProperty("https.proxyPort", "3128");
+        System.getProperties().put("http.proxyUser", "edcguest");
+        System.getProperties().put("http.proxyPassword", "edcguest");
+        System.setProperty("java.net.useSystemProxies", "true");
+    }
+
     // returns connection to database
     public Connection getConnection() {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12199658?autoReconnect=true&useSSL=false", "sql12199658", "ZF3ESrPUPW");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tutorspoint", "root", "");
         } catch (Exception e) {
             e.printStackTrace();
             new ErrorMsgDisplay(e.getMessage(), Home.getHome().getHomePanel());

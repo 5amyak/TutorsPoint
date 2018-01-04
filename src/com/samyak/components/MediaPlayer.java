@@ -1,5 +1,6 @@
 package com.samyak.components;
 
+import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
@@ -19,7 +20,8 @@ public class MediaPlayer {
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
     public MediaPlayer(PlayButton playButton) {
-        new NativeDiscovery().discover();
+        boolean found = new NativeDiscovery().discover();
+        new ErrorMsgDisplay("found: " + found, null);
         this.playButton = playButton;
 
         // added a new window listener that invokes mediaPlayerComponent.release() to release the media player component and associated native resources, before exiting the application
@@ -99,7 +101,8 @@ public class MediaPlayer {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        mediaPlayerComponent.getMediaPlayer().playMedia("http://192.168.43.79/" + playButton.getVideoPath());
+        mediaPlayerComponent.getMediaPlayer().setPlaySubItems(true);
+        mediaPlayerComponent.getMediaPlayer().playMedia("http://127.0.0.1/" + playButton.getVideoPath());
     }
 
     private void closeWindow() {

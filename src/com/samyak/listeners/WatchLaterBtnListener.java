@@ -1,6 +1,6 @@
 package com.samyak.listeners;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.samyak.Home;
 import com.samyak.components.ErrorMsgDisplay;
 
@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 public class WatchLaterBtnListener implements ActionListener {

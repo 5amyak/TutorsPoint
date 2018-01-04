@@ -1,6 +1,6 @@
 package com.samyak.listeners;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.samyak.Home;
 import com.samyak.components.ErrorMsgDisplay;
 
