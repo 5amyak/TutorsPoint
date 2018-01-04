@@ -2,8 +2,18 @@
   <library name="vlcj-3.10.1">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/vlcj-3.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/jna-4.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/jna-platform-4.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/slf4j-api-1.7.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/slf4j-nop-1.7.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/vlcj-3.10.1-tests.jar!/" />
     </CLASSES>
-    <JAVADOC />
-    <SOURCES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/vlcj-3.10.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/vlcj-3.10.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/vlcj-3.10.1/vlcj-3.10.1-test-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
